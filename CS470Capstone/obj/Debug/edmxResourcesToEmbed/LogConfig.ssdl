@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="logconfigModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Configuration">
+    <Key>
+      <PropertyRef Name="Application" />
+      <PropertyRef Name="Key" />
+    </Key>
+    <Property Name="Application" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Log">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EventID" Type="int" />
+    <Property Name="Priority" Type="int" Nullable="false" />
+    <Property Name="Severity" Type="nvarchar" MaxLength="32" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="Timestamp" Type="datetime" Nullable="false" />
+    <Property Name="MachineName" Type="nvarchar" MaxLength="32" Nullable="false" />
+    <Property Name="AppDomainName" Type="nvarchar" MaxLength="512" Nullable="false" />
+    <Property Name="ProcessID" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="ProcessName" Type="nvarchar" MaxLength="512" Nullable="false" />
+    <Property Name="ThreadName" Type="nvarchar" MaxLength="512" />
+    <Property Name="Win32ThreadId" Type="nvarchar" MaxLength="128" />
+    <Property Name="DoctorKey" Type="int" />
+    <Property Name="AuthenticatedUser" Type="nvarchar" MaxLength="256" />
+    <Property Name="Message" Type="nvarchar(max)" />
+    <Property Name="FormattedMessage" Type="nvarchar(max)" />
+    <Property Name="EntityKey" Type="nvarchar(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="SSIS Configurations">
+    <Key>
+      <PropertyRef Name="ConfigurationFilter" />
+      <PropertyRef Name="PackagePath" />
+      <PropertyRef Name="ConfiguredValueType" />
+    </Key>
+    <Property Name="ConfigurationFilter" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="ConfiguredValue" Type="nvarchar" MaxLength="255" />
+    <Property Name="PackagePath" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="ConfiguredValueType" Type="nvarchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysssislog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="event" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="computer" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="operator" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="source" Type="nvarchar" MaxLength="1024" Nullable="false" />
+    <Property Name="sourceid" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="executionid" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="starttime" Type="datetime" Nullable="false" />
+    <Property Name="endtime" Type="datetime" Nullable="false" />
+    <Property Name="datacode" Type="int" Nullable="false" />
+    <Property Name="databytes" Type="image" />
+    <Property Name="message" Type="nvarchar" MaxLength="2048" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="logconfigModelStoreContainer">
+    <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysssislog" EntityType="Self.sysssislog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SSIS Configurations" EntityType="Self.SSIS Configurations" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [SSIS Configurations].[ConfigurationFilter] AS [ConfigurationFilter], 
+    [SSIS Configurations].[ConfiguredValue] AS [ConfiguredValue], 
+    [SSIS Configurations].[PackagePath] AS [PackagePath], 
+    [SSIS Configurations].[ConfiguredValueType] AS [ConfiguredValueType]
+    FROM [dbo].[SSIS Configurations] AS [SSIS Configurations]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

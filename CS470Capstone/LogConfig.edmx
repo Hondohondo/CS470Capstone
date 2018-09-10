@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="logconfigModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Configuration">
+          <Key>
+            <PropertyRef Name="Application" />
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Application" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventID" Type="int" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="Severity" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="MachineName" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="AppDomainName" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ProcessID" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ProcessName" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ThreadName" Type="nvarchar" MaxLength="512" />
+          <Property Name="Win32ThreadId" Type="nvarchar" MaxLength="128" />
+          <Property Name="DoctorKey" Type="int" />
+          <Property Name="AuthenticatedUser" Type="nvarchar" MaxLength="256" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="FormattedMessage" Type="nvarchar(max)" />
+          <Property Name="EntityKey" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SSIS Configurations">
+          <Key>
+            <PropertyRef Name="ConfigurationFilter" />
+            <PropertyRef Name="PackagePath" />
+            <PropertyRef Name="ConfiguredValueType" />
+          </Key>
+          <Property Name="ConfigurationFilter" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ConfiguredValue" Type="nvarchar" MaxLength="255" />
+          <Property Name="PackagePath" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ConfiguredValueType" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysssislog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="event" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="computer" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="operator" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="source" Type="nvarchar" MaxLength="1024" Nullable="false" />
+          <Property Name="sourceid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="executionid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="starttime" Type="datetime" Nullable="false" />
+          <Property Name="endtime" Type="datetime" Nullable="false" />
+          <Property Name="datacode" Type="int" Nullable="false" />
+          <Property Name="databytes" Type="image" />
+          <Property Name="message" Type="nvarchar" MaxLength="2048" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="logconfigModelStoreContainer">
+          <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysssislog" EntityType="Self.sysssislog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SSIS Configurations" EntityType="Self.SSIS Configurations" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SSIS Configurations].[ConfigurationFilter] AS [ConfigurationFilter], 
+    [SSIS Configurations].[ConfiguredValue] AS [ConfiguredValue], 
+    [SSIS Configurations].[PackagePath] AS [PackagePath], 
+    [SSIS Configurations].[ConfiguredValueType] AS [ConfiguredValueType]
+    FROM [dbo].[SSIS Configurations] AS [SSIS Configurations]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="logconfigModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Configuration">
+          <Key>
+            <PropertyRef Name="Application" />
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Application" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventID" Type="Int32" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="Severity" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MachineName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AppDomainName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProcessID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProcessName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ThreadName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Win32ThreadId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DoctorKey" Type="Int32" />
+          <Property Name="AuthenticatedUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FormattedMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EntityKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sysssislog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="event" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="computer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="operator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="source" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sourceid" Type="Guid" Nullable="false" />
+          <Property Name="executionid" Type="Guid" Nullable="false" />
+          <Property Name="starttime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="endtime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="datacode" Type="Int32" Nullable="false" />
+          <Property Name="databytes" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="message" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SSIS_Configuration">
+          <Key>
+            <PropertyRef Name="ConfigurationFilter" />
+            <PropertyRef Name="PackagePath" />
+            <PropertyRef Name="ConfiguredValueType" />
+          </Key>
+          <Property Name="ConfigurationFilter" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConfiguredValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PackagePath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConfiguredValueType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="logconfigEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Configurations" EntityType="Self.Configuration" />
+          <EntitySet Name="Logs" EntityType="Self.Log" />
+          <EntitySet Name="sysssislogs" EntityType="Self.sysssislog" />
+          <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configuration" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="logconfigModelStoreContainer" CdmEntityContainer="logconfigEntities1">
+          <EntitySetMapping Name="Configurations">
+            <EntityTypeMapping TypeName="logconfigModel.Configuration">
+              <MappingFragment StoreEntitySet="Configuration">
+                <ScalarProperty Name="Application" ColumnName="Application" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="logconfigModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Severity" ColumnName="Severity" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+                <ScalarProperty Name="AppDomainName" ColumnName="AppDomainName" />
+                <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
+                <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+                <ScalarProperty Name="ThreadName" ColumnName="ThreadName" />
+                <ScalarProperty Name="Win32ThreadId" ColumnName="Win32ThreadId" />
+                <ScalarProperty Name="DoctorKey" ColumnName="DoctorKey" />
+                <ScalarProperty Name="AuthenticatedUser" ColumnName="AuthenticatedUser" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="FormattedMessage" ColumnName="FormattedMessage" />
+                <ScalarProperty Name="EntityKey" ColumnName="EntityKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysssislogs">
+            <EntityTypeMapping TypeName="logconfigModel.sysssislog">
+              <MappingFragment StoreEntitySet="sysssislog">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="event" ColumnName="event" />
+                <ScalarProperty Name="computer" ColumnName="computer" />
+                <ScalarProperty Name="operator" ColumnName="operator" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="sourceid" ColumnName="sourceid" />
+                <ScalarProperty Name="executionid" ColumnName="executionid" />
+                <ScalarProperty Name="starttime" ColumnName="starttime" />
+                <ScalarProperty Name="endtime" ColumnName="endtime" />
+                <ScalarProperty Name="datacode" ColumnName="datacode" />
+                <ScalarProperty Name="databytes" ColumnName="databytes" />
+                <ScalarProperty Name="message" ColumnName="message" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SSIS_Configurations">
+            <EntityTypeMapping TypeName="logconfigModel.SSIS_Configuration">
+              <MappingFragment StoreEntitySet="SSIS Configurations">
+                <ScalarProperty Name="ConfigurationFilter" ColumnName="ConfigurationFilter" />
+                <ScalarProperty Name="ConfiguredValue" ColumnName="ConfiguredValue" />
+                <ScalarProperty Name="PackagePath" ColumnName="PackagePath" />
+                <ScalarProperty Name="ConfiguredValueType" ColumnName="ConfiguredValueType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

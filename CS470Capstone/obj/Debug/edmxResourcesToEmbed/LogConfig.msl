@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="logconfigModelStoreContainer" CdmEntityContainer="logconfigEntities1">
+    <EntitySetMapping Name="Configurations">
+      <EntityTypeMapping TypeName="logconfigModel.Configuration">
+        <MappingFragment StoreEntitySet="Configuration">
+          <ScalarProperty Name="Application" ColumnName="Application" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Logs">
+      <EntityTypeMapping TypeName="logconfigModel.Log">
+        <MappingFragment StoreEntitySet="Log">
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+          <ScalarProperty Name="EventID" ColumnName="EventID" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="Severity" ColumnName="Severity" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+          <ScalarProperty Name="AppDomainName" ColumnName="AppDomainName" />
+          <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
+          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+          <ScalarProperty Name="ThreadName" ColumnName="ThreadName" />
+          <ScalarProperty Name="Win32ThreadId" ColumnName="Win32ThreadId" />
+          <ScalarProperty Name="DoctorKey" ColumnName="DoctorKey" />
+          <ScalarProperty Name="AuthenticatedUser" ColumnName="AuthenticatedUser" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="FormattedMessage" ColumnName="FormattedMessage" />
+          <ScalarProperty Name="EntityKey" ColumnName="EntityKey" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysssislogs">
+      <EntityTypeMapping TypeName="logconfigModel.sysssislog">
+        <MappingFragment StoreEntitySet="sysssislog">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="event" ColumnName="event" />
+          <ScalarProperty Name="computer" ColumnName="computer" />
+          <ScalarProperty Name="operator" ColumnName="operator" />
+          <ScalarProperty Name="source" ColumnName="source" />
+          <ScalarProperty Name="sourceid" ColumnName="sourceid" />
+          <ScalarProperty Name="executionid" ColumnName="executionid" />
+          <ScalarProperty Name="starttime" ColumnName="starttime" />
+          <ScalarProperty Name="endtime" ColumnName="endtime" />
+          <ScalarProperty Name="datacode" ColumnName="datacode" />
+          <ScalarProperty Name="databytes" ColumnName="databytes" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SSIS_Configurations">
+      <EntityTypeMapping TypeName="logconfigModel.SSIS_Configuration">
+        <MappingFragment StoreEntitySet="SSIS Configurations">
+          <ScalarProperty Name="ConfigurationFilter" ColumnName="ConfigurationFilter" />
+          <ScalarProperty Name="ConfiguredValue" ColumnName="ConfiguredValue" />
+          <ScalarProperty Name="PackagePath" ColumnName="PackagePath" />
+          <ScalarProperty Name="ConfiguredValueType" ColumnName="ConfiguredValueType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
