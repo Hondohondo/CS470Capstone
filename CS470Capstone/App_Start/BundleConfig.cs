@@ -30,6 +30,14 @@ namespace CCFLoggingConfig
             //bundle for home 
             bundles.Add(new ScriptBundle("~/bundles/home").Include(
                 "~/Content/scripts/Home/Home.js", "~/Content/scripts/Home/Home.API.js"));
+
+            //bundle for home 
+            bundles.Add(new ScriptBundle("~/bundles/logs").Include(
+                "~/Content/scripts/Logs/Logs.js", "~/Content/scripts/Logs/Logs.API.js"));
+
+            //bundle for home 
+            bundles.Add(new ScriptBundle("~/bundles/config").Include(
+                "~/Content/scripts/Config/Config.js", "~/Content/scripts/Config/Config.API.js"));
         }
     }
 }

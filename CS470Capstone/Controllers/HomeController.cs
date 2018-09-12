@@ -12,12 +12,13 @@ namespace CCFLoggingConfig.Controllers
         [HttpPost]
         public JsonResult GetHelloWorld(string first)
         {
+
             using (var db = new logconfigEntities1())
             {
-                var ID = "ID of record you'd like to grab"
+                var result = db.Logs.Single();
             }
 
-            var second = "World";
+                var second = "World";
 
             return Json(first+second);
         }
