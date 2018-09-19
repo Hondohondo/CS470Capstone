@@ -5,10 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9ce939e4be0942e99deed6e8e8dcb897" Name="Diagram1">
-        <EntityTypeShape EntityType="logconfigModel.Configuration" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="logconfigModel.Log" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="logconfigModel.Configuration" Width="1.5" PointX="1" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="logconfigModel.Log" Width="1.5" PointX="2.875" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="logconfigModel.sysssislog" Width="1.5" PointX="4.75" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="logconfigModel.SSIS_Configuration" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="logconfigModel.SSIS_Configuration" Width="1.5" PointX="6.5" PointY="0.625" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
