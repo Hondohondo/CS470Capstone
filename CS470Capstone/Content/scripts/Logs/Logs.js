@@ -2,7 +2,34 @@
     Initialize: function () {
         //logs.CreateLogs();
         //logs.CreateSSISLog();
+        logs.InitializeLogsDataTable();
     },
+
+    InitializeLogsDataTable: function () {
+        $("#table-logs").DataTable({
+            ajax: {
+                url: "../Logs/GetLogsForDataTable",
+                type: "POST",
+                error: function (xhr) {
+                    alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+                }
+            },
+            rowId: "ExportID",
+            serverSide: true,
+            searching: false,
+            pageLength: 10,
+            lengthChange: false,
+            order: [1, "desc"],
+            columns: [
+                { data: "Title", sortable: true, searchable: false, name: "Title" },
+                { data: "Severity", sortable: true, searchable: false, name: "Severity" },
+                { data: "Priority", sortable: true, searchable: false, name: "Priority" },
+                { data: "Timestamp", sortable: true, searchable: false, name: "Timestamp" },
+                { data: "AuthenticatedUser", sortable: false, searchable: false, name: "Authenticated User"},
+                { Name: "Actions", sortable: false, searchable: false }
+            ],
+        });
+    }
 
     //CreateLogs: function () {
     //    logsAPI.CreateLogs(function (response) {
