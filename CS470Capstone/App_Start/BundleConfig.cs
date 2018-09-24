@@ -9,7 +9,8 @@ namespace CCFLoggingConfig
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.datatables.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -29,7 +30,15 @@ namespace CCFLoggingConfig
 
             //bundle for home 
             bundles.Add(new ScriptBundle("~/bundles/home").Include(
-                "~/Content/scripts/Home/Home.js", "~/Content/scripts/Home/Home.API.js"));
+                "~/Content/scripts/Home/Home.API.js","~/Content/scripts/Home/Home.js"));
+
+            //bundle for logs
+            bundles.Add(new ScriptBundle("~/bundles/logs").Include(
+                "~/Content/scripts/Logs/Logs.API.js", "~/Content/scripts/Logs/Logs.js"));
+
+            //bundle for config
+            bundles.Add(new ScriptBundle("~/bundles/config").Include(
+                "~/Content/scripts/Config/Config.API.js", "~/Content/scripts/Config/Config.js"));
         }
     }
 }
