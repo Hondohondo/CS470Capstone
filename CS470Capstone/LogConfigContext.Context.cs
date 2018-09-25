@@ -13,10 +13,10 @@ namespace CCFLoggingConfig
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class logconfigEntities1 : DbContext
+    public partial class logconfigEntities : DbContext
     {
-        public logconfigEntities1()
-            : base("name=logconfigEntities1")
+        public logconfigEntities()
+            : base("name=logconfigEntities")
         {
         }
     
