@@ -10,11 +10,9 @@
             ajax: {
                 url: "../Logs/GetLogsForDataTable",
                 type: "POST",
-                error: function (xhr) {
-                    alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
-                }
+                datatype: "json",
             },
-            rowId: "ExportID",
+            rowId: "LogID",
             serverSide: true,
             searching: false,
             pageLength: 10,
@@ -26,7 +24,7 @@
                 { data: "Priority", sortable: true, searchable: false, name: "Priority" },
                 { data: "Timestamp", sortable: true, searchable: false, name: "Timestamp" },
                 { data: "AuthenticatedUser", sortable: false, searchable: false, name: "Authenticated User"},
-                { Name: "Actions", sortable: false, searchable: false }
+                //{ Name: "Actions", sortable: false, searchable: false }
             ],
         });
     }

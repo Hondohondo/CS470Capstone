@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,17 +35,21 @@ namespace CCFLoggingConfig.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                using (var db = new logconfigEntities1())
+                using (var db = new logconfigEntities())
                 {
                     IQueryable<Log> query = db.Logs;
 
-                    //not working right now
-                    ////Sorting    
-                    //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
-                    //{
-                    //    query = query.OrderBy(sortColumn + " " + sortColumnDir);
-                    //}
-                    //Search    
+                    //Sorting    
+                    if (sortDirection.ToLowerInvariant() == "asc")
+                    {
+                        query = query.OrderBy(sortColumn);
+                    }
+                    else
+                    {
+                        query = query.OrderBy(sortColumn + " " + sortDirection);
+                    }
+
+                    ////Search
                     //if (!string.IsNullOrEmpty(searchValue))
                     //{
                     //    query = query.Where(l => l.Title == searchValue);
@@ -61,7 +66,7 @@ namespace CCFLoggingConfig.Controllers
             }
             catch(Exception ex)
             {
-                return Json(false);
+                return Json(ex.Message);
             }
         }
 
