@@ -10,7 +10,8 @@ namespace CCFLoggingConfig
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.datatables.js"));
+                        "~/Scripts/jquery.datatables.js",
+                        "~/Scripts/dataTables.bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -24,9 +25,9 @@ namespace CCFLoggingConfig
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/bootstrap.css")
+                      .Include("~/Content/site.css")
+                      .Include("~/Content/css/datatables/css/dataTables.bootstrap.css"));
 
             //bundle for home 
             bundles.Add(new ScriptBundle("~/bundles/home").Include(
@@ -39,6 +40,14 @@ namespace CCFLoggingConfig
             //bundle for config
             bundles.Add(new ScriptBundle("~/bundles/config").Include(
                 "~/Content/scripts/Config/Config.API.js", "~/Content/scripts/Config/Config.js"));
+        }
+
+        public class CssRewriteUrlTransformWrapper : IItemTransform
+        {
+            public string Process(string includedVirtualPath, string input)
+            {
+                return new CssRewriteUrlTransform().Process("~" + VirtualPathUtility.ToAbsolute(includedVirtualPath), input);
+            }
         }
     }
 }

@@ -191,6 +191,21 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\datatables\css\dataTables.bootstrap.css" />
+    <Content Include="Content\css\datatables\css\dataTables.bootstrap.min.css" />
+    <Content Include="Content\css\datatables\css\dataTables.foundation.css" />
+    <Content Include="Content\css\datatables\css\dataTables.foundation.min.css" />
+    <Content Include="Content\css\datatables\css\dataTables.jqueryui.css" />
+    <Content Include="Content\css\datatables\css\dataTables.jqueryui.min.css" />
+    <Content Include="Content\css\datatables\css\dataTables.semanticui.css" />
+    <Content Include="Content\css\datatables\css\dataTables.semanticui.min.css" />
+    <Content Include="Content\css\datatables\css\jquery.dataTables.css" />
+    <Content Include="Content\css\datatables\css\jquery.dataTables.min.css" />
+    <Content Include="Content\css\datatables\images\sort_asc.png" />
+    <Content Include="Content\css\datatables\images\sort_asc_disabled.png" />
+    <Content Include="Content\css\datatables\images\sort_both.png" />
+    <Content Include="Content\css\datatables\images\sort_desc.png" />
+    <Content Include="Content\css\datatables\images\sort_desc_disabled.png" />
     <Content Include="Content\scripts\Config\Config.API.js" />
     <Content Include="Content\scripts\Config\Config.js" />
     <Content Include="Content\scripts\Home\Home.API.js" />
@@ -223,8 +238,15 @@
       <DependentUpon>LogConfigContext.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\dataTables.bootstrap.js" />
+    <Content Include="Scripts\dataTables.bootstrap.min.js" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.datatables.js" />
     <Content Include="Scripts\jquery.datatables.min.js" />
@@ -252,13 +274,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\css\" />
     <Folder Include="Content\images\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

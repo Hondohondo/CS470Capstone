@@ -6,7 +6,7 @@
     },
 
     InitializeLogsDataTable: function () {
-        $("#table-logs").DataTable({
+        $("#table-logs").dataTable({
             ajax: {
                 url: "../Logs/GetLogsForDataTable",
                 type: "POST",
@@ -14,9 +14,9 @@
             },
             rowId: "LogID",
             serverSide: true,
-            searching: false,
+            searching: true,
             pageLength: 10,
-            lengthChange: false,
+            lengthChange: true,
             order: [1, "desc"],
             columns: [
                 { data: "Title", sortable: true, searchable: false, name: "Title" },
@@ -26,6 +26,15 @@
                 { data: "AuthenticatedUser", sortable: false, searchable: false, name: "Authenticated User"},
                 //{ Name: "Actions", sortable: false, searchable: false }
             ],
+            columnDefs: [
+                {
+                    targets: 5,
+                    visible: true,
+                    render: function (data, type, row) {
+                        return '<button id="my button">Click Me!</button>'
+                    }
+                },
+            ]
         });
     }
 
