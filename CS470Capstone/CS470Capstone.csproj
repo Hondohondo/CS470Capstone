@@ -153,11 +153,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ConfigController.cs" />
+    <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Configuration.cs">
       <DependentUpon>LogConfigContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SSIS_ConfigurationController.cs" />
+    <Compile Include="Controllers\SysssislogController.cs" />
     <Compile Include="Log.cs">
       <DependentUpon>LogConfigContext.tt</DependentUpon>
     </Compile>
@@ -176,7 +178,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LogConfigContext.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\LogsController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="SSIS_Configuration.cs">
       <DependentUpon>LogConfigContext.tt</DependentUpon>
     </Compile>
@@ -206,12 +208,16 @@
     <Content Include="Content\css\datatables\images\sort_both.png" />
     <Content Include="Content\css\datatables\images\sort_desc.png" />
     <Content Include="Content\css\datatables\images\sort_desc_disabled.png" />
-    <Content Include="Content\scripts\Config\Config.API.js" />
-    <Content Include="Content\scripts\Config\Config.js" />
+    <Content Include="Content\scripts\Configuration\Configuration.API.js" />
+    <Content Include="Content\scripts\Configuration\Configuration.js" />
     <Content Include="Content\scripts\Home\Home.API.js" />
     <Content Include="Content\scripts\Home\Home.js" />
-    <Content Include="Content\scripts\Logs\Logs.API.js" />
-    <Content Include="Content\scripts\Logs\Logs.js" />
+    <Content Include="Content\scripts\Log\Log.API.js" />
+    <Content Include="Content\scripts\Log\Log.js" />
+    <Content Include="Content\scripts\SSIS_Configuration\SSIS_Configuration.API.js" />
+    <Content Include="Content\scripts\SSIS_Configuration\SSIS_Configuration.js" />
+    <Content Include="Content\scripts\Sysssislog\sysssislog.API.js" />
+    <Content Include="Content\scripts\Sysssislog\sysssislog.js" />
     <Content Include="LogConfigContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LogConfigContext.edmx</DependentUpon>
@@ -269,8 +275,10 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Config\Index.cshtml" />
-    <Content Include="Views\Logs\Index.cshtml" />
+    <Content Include="Views\Configuration\Index.cshtml" />
+    <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\SSIS_Configuration\Index.cshtml" />
+    <Content Include="Views\Sysssislog\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

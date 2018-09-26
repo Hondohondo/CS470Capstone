@@ -33,21 +33,23 @@ namespace CCFLoggingConfig
             bundles.Add(new ScriptBundle("~/bundles/home").Include(
                 "~/Content/scripts/Home/Home.API.js","~/Content/scripts/Home/Home.js"));
 
-            //bundle for logs
-            bundles.Add(new ScriptBundle("~/bundles/logs").Include(
-                "~/Content/scripts/Logs/Logs.API.js", "~/Content/scripts/Logs/Logs.js"));
+            //bundle for log
+            bundles.Add(new ScriptBundle("~/bundles/log").Include(
+                "~/Content/scripts/Log/Log.API.js", "~/Content/scripts/Log/Log.js"));
 
-            //bundle for config
-            bundles.Add(new ScriptBundle("~/bundles/config").Include(
-                "~/Content/scripts/Config/Config.API.js", "~/Content/scripts/Config/Config.js"));
-        }
+            //bundle for configuration
+            bundles.Add(new ScriptBundle("~/bundles/configuration").Include(
+                "~/Content/scripts/Configuration/Configuration.API.js", "~/Content/scripts/Configuration/Configuration.js"));
 
-        public class CssRewriteUrlTransformWrapper : IItemTransform
-        {
-            public string Process(string includedVirtualPath, string input)
-            {
-                return new CssRewriteUrlTransform().Process("~" + VirtualPathUtility.ToAbsolute(includedVirtualPath), input);
-            }
+            //bundle for configuration
+            bundles.Add(new ScriptBundle("~/bundles/sysssislog").Include(
+                "~/Content/scripts/Sysssislog/Sysssislog.API.js", "~/Content/scripts/Sysssislog/Sysssislog.js"));
+
+            //bundle for configuration
+            bundles.Add(new ScriptBundle("~/bundles/ssis_configuration").Include(
+                "~/Content/scripts/SSIS_Configuration/SSIS_Configuration.API.js", "~/Content/scripts/SSIS_Configuration/SSIS_Configuration.js"));
+
+
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿var logs = {
+﻿var log = {
     Initialize: function () {
-        //logs.CreateLogs();
-        //logs.CreateSSISLog();
-        logs.InitializeLogsDataTable();
+        log.InitializeLogsDataTable();
     },
 
     InitializeLogsDataTable: function () {
-        $("#table-logs").dataTable({
+        $("#table-log").dataTable({
             ajax: {
-                url: "../Logs/GetLogsForDataTable",
+                url: "../Log/GetLogForDataTable",
                 type: "POST",
                 datatype: "json",
             },
@@ -24,7 +22,6 @@
                 { data: "Priority", sortable: true, searchable: false, name: "Priority" },
                 { data: "Timestamp", sortable: true, searchable: false, name: "Timestamp" },
                 { data: "AuthenticatedUser", sortable: false, searchable: false, name: "Authenticated User"},
-                //{ Name: "Actions", sortable: false, searchable: false }
             ],
             columnDefs: [
                 {
@@ -37,18 +34,6 @@
             ]
         });
     }
-
-    //CreateLogs: function () {
-    //    logsAPI.CreateLogs(function (response) {
-    //        console.log(response);
-    //    });
-    //}
-
-    //CreateSSISLog: function () {
-    //    logsAPI.CreateSSISLog(function (response) {
-    //        console.log(response);
-    //    });
-    //}
 }
 
-$(document).ready(logs.Initialize());
+$(document).ready(log.Initialize());

@@ -7,16 +7,16 @@ using System.Web.Mvc;
 
 namespace CCFLoggingConfig.Controllers
 {
-    public class LogsController : Controller
+    public class LogController : Controller
     {
-        // GET: Logs
+
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        public JsonResult GetLogsForDataTable()
+        public JsonResult GetLogForDataTable()
         {
             try
             {
