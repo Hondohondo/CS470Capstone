@@ -16,6 +16,24 @@ namespace CCFLoggingConfig.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetLog(int logID)
+        {
+            try
+            {
+                using (var db = new logconfigEntities())
+                {
+                    var log = db.Logs.Find(logID);
+                    return Json(log);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
         public JsonResult GetLogForDataTable()
         {
             try
@@ -24,8 +42,9 @@ namespace CCFLoggingConfig.Controllers
                 var start = Request.Form.GetValues("start").FirstOrDefault();
                 var length = Request.Form.GetValues("length").FirstOrDefault();
 
-                var sortDirection = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault().ToString();
 
+                var sortDirection = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
                 var sortColumnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
                 var sortColumn = Request.Form.GetValues(String.Format("columns[{0}][name]", sortColumnIndex)).FirstOrDefault();
 
@@ -49,11 +68,15 @@ namespace CCFLoggingConfig.Controllers
                         query = query.OrderBy(sortColumn + " " + sortDirection);
                     }
 
+                    // TODO:
+                    // fix this
+
                     ////Search
-                    //if (!string.IsNullOrEmpty(searchValue))
-                    //{
-                    //    query = query.Where(l => l.Title == searchValue);
-                    //}
+                    if (!string.IsNullOrEmpty(searchValue))
+                    {
+                        query = query.Where(l => l.Title.Contains(searchValue) ||
+                            l.AuthenticatedUser.Contains(searchValue));
+                    }
 
                     //total number of rows count     
                     recordsTotal = query.Count();

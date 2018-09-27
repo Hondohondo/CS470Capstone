@@ -8,6 +8,23 @@ namespace CCFLoggingConfig
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+
+            /*
+                CSS Bundles
+             */
+
+            //how to use CDN in bundles
+            //bundles.UseCdn = true;
+            //var fontawesome = "cdn_path_here";
+
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/bootstrap.css")
+                      .Include("~/Content/site.css")
+                      .Include("~/Content/css/datatables/css/dataTables.foundation.css")
+                      .Include("~/Content/css/fa/css/all.css"));
+
+            /*
+                Script Bundles
+             */
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.datatables.js",
@@ -24,10 +41,6 @@ namespace CCFLoggingConfig
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/bootstrap.css")
-                      .Include("~/Content/site.css")
-                      .Include("~/Content/css/datatables/css/dataTables.bootstrap.css"));
 
             //bundle for home 
             bundles.Add(new ScriptBundle("~/bundles/home").Include(
