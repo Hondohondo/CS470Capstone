@@ -4,9 +4,9 @@
     },
 
     InitializeConfigDataTable: function () {
-        $("#config-logs").DataTable({
+        $("#table-configuration").DataTable({
             ajax: {
-                url: "../Config/GetConfigsForDataTable",
+                url: "../Configuration/GetConfigurationForDataTable",
                 type: "POST",
                 datatype: "json",
             },
@@ -19,7 +19,7 @@
             columns: [
                 { data: "Application", sortable: true, searchable: true, name: "Application" },
                 { data: "Key", sortable: true, searchable: true, name: "Key" },
-                { Name: "Configure", sortable: false, searchable: false }
+                { Name: "Actions", sortable: false, searchable: false }
             ],
             columnDefs: [
                 {
@@ -35,4 +35,4 @@
 
 };
 
-$(document).ready(config.Initialize());
+$(document).ready(configuration.Initialize());

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,16 +38,16 @@ namespace CCFLoggingConfig.Controllers
 
                 using (var db = new logconfigEntities())
                 {
-                    IQueryable<Log> query = db.Logs;
+                    IQueryable<Configuration> query = db.Configurations;
 
                     //Sorting    
                     if (sortDirection.ToLowerInvariant() == "asc")
                     {
-                        //query = query.OrderBy(sortColumn);
+                        query = query.OrderBy(sortColumn);
                     }
                     else
                     {
-                        //query = query.OrderBy(sortColumn + " " + sortDirection);
+                        query = query.OrderBy(sortColumn + " " + sortDirection);
                     }
 
                     ////Search
