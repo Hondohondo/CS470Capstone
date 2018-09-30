@@ -1,22 +1,22 @@
 ﻿var syssislog = {
     Initialize: function () {
-        log.InitializeLogsDataTable();
+        Sysssislog.InitializeLogsDataTable();
 
-        $(document).on("click", "#button-view-full-log", function () {
-            log.GetLog($(this).attr("data-log-id"));
+        $(document).on("click", "#button-view-full-sysssislog", function () {
+            Sysssislog.GetSysssislog($(this).attr("data-sysssislog-id"));
         });
     },
 
     GetSysssislog: function (ID) {
         //open modal
-        $("#modal-log-details").modal("show");
+        $("#modal-sysssislog-details").modal("show");
 
         sysssislogAPI.GetSysssislog(ID, function (response) {
             if (response) {
                 //build table with data
                 //possible use handlebars template?
 
-                $("#log-details").addClass("hidden");
+                $("#sysssislog-details").addClass("hidden");
                 $("#table-sysssislog-details > tbody:last-child").empty();
 
                 var ID = "<tr><td><b> ID: </b></td><td>" + response.ID + "</td></tr>";
@@ -59,7 +59,7 @@
                 { data: "Event", sortable: true, searchable: false, name: "Event" },
                 { data: "Computer", sortable: true, searchable: false, name: "Computer" },
                 { data: "Operator", sortable: true, searchable: false, name: "Operator" },
-                { data: "AuthenticatedUser", sortable: true, searchable: false, name: "AuthenticatedUser" },
+              
             ],
             columnDefs: [
                 {
