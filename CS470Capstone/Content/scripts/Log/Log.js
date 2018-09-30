@@ -5,6 +5,20 @@
         $(document).on("click", "#button-view-full-log", function () {
             log.GetLog($(this).attr("data-log-id"));
         });
+
+        $(document).on("click", "#button-view-pretty-json", function () {
+            $("#modal-pretty-json").modal("show");
+        });
+
+        //close log details modal
+        $(document).on("hidden.bs.modal", "#modal-log-details", function () {
+            $("#table-log-details > tbody:last-child").empty();
+        });
+
+        //close pretty json modal
+        $(document).on("hidden.bs.modal", "#modal-pretty-json", function () {
+            $("#pretty-json").empty();
+        });
     },
 
     GetLog: function (logID) {
@@ -34,7 +48,12 @@
                 var DoctorKey = "<tr><td><b> DoctorKey: </b></td><td>" + response.DoctorKey + "</td></tr>";
                 var AuthenticatedUser = "<tr><td><b> WinAuthenticatedUser32ThreadId: </b></td><td>" + response.AuthenticatedUser + "</td></tr>";
                 var Message = "<tr><td><b> Message: </b></td><td>" + response.Message + "</td></tr>";
-                var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button class="btn btn-sm btn-primary"><span class="fa fa-search"></span></button>&nbsp; This button will open a tool to view formatted data</td></tr>';
+
+                var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary"><span class="fa fa-search"></span></button>&nbsp;</td></tr>';
+                var pretty = JSON.stringify(response.FormattedMessage, undefined, 5);
+                var json = JSON.parse(pretty);
+                $("#pretty-json").append(json);
+                
                 var EntityKey = "<tr><td><b> EntityKey: </b></td><td>" + response.EntityKey + "</td></tr>";
                 $("#table-log-details > tbody:last-child").append(LogID + EventID + Priority + Severity + Title + Timestamp + MachineName + AppDomainName + ProcessID + ProcessName + ThreadName + Win32ThreadId + DoctorKey + AuthenticatedUser + Message + FormattedMessage + EntityKey);
                 $("#log-details").removeClass("hidden");
