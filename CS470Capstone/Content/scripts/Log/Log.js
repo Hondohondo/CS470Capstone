@@ -17,7 +17,7 @@
 
         //close pretty json modal
         $(document).on("hidden.bs.modal", "#modal-pretty-json", function () {
-            $("#pretty-json").empty();
+            //theoretically we would empty the well containing the formatted message but we have not figured out how to save state between modal windows yet.
         });
     },
 
@@ -49,11 +49,14 @@
                 var AuthenticatedUser = "<tr><td><b> WinAuthenticatedUser32ThreadId: </b></td><td>" + response.AuthenticatedUser + "</td></tr>";
                 var Message = "<tr><td><b> Message: </b></td><td>" + response.Message + "</td></tr>";
 
+                //formatted message parsing and syntax highlighting
                 var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary"><span class="fa fa-search"></span></button>&nbsp;</td></tr>';
-                var pretty = JSON.stringify(response.FormattedMessage, undefined, 5);
-                var json = JSON.parse(pretty);
-                $("#pretty-json").append(json);
-                
+                var no_backslashes = response.FormattedMessage.replace(/\\/g, "/");
+                var parsed = JSON.parse(no_backslashes);
+                var syntax = log.JSONSyntaxHighlight(parsed);
+                $("#pretty-json").append(syntax);
+
+                //finish building table and append all columns to table
                 var EntityKey = "<tr><td><b> EntityKey: </b></td><td>" + response.EntityKey + "</td></tr>";
                 $("#table-log-details > tbody:last-child").append(LogID + EventID + Priority + Severity + Title + Timestamp + MachineName + AppDomainName + ProcessID + ProcessName + ThreadName + Win32ThreadId + DoctorKey + AuthenticatedUser + Message + FormattedMessage + EntityKey);
                 $("#log-details").removeClass("hidden");
@@ -95,7 +98,31 @@
                 },
             ]
         });
-    }
+    },
+
+    //function borrowed from https://stackoverflow.com/a/7220510
+
+    JSONSyntaxHighlight: function (json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    },
 }
 
 $(document).ready(log.Initialize());

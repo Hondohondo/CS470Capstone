@@ -22,3 +22,25 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* Need this to enable the spacing in pretty printing JSON objects */
+#pretty-json {
+    white-space: pre;
+    overflow: hidden;
+}
+
+#pretty-json .key {
+    color: blue;
+}
+
+#pretty-json .string {
+    color: green;
+}
+
+#pretty-json .null {
+    color: red;
+}
+
+#pretty-json .boolean {
+    color: orange;
+}
