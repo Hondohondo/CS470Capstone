@@ -1,6 +1,13 @@
 ﻿var configuration = {
     Initialize: function () {
         configuration.InitializeConfigDataTable();
+
+
+        $(document).on("click", "#button-view-configuration", function () {
+            configuration.GetConfiguration($(this).attr("data-configurationApp"), $(this).attr("data-configurationKey"));
+            $("#modal-configuration").modal("show");
+        });
+
     },
 
     InitializeConfigDataTable: function () {
@@ -26,12 +33,32 @@
                     targets: 2,
                     visible: true,
                     render: function (data, type, row) {
-                        return '<button id="my button">Configure</button>';
+  
+                        return '<button class="btn btn-sm btn-primary" id="button-view-configuration" data-configurationApp="' + row.Application + '" data-configurationKey= "'+ row.Key + '"><span class="fa fa-edit"><span></button>';
                     }
                 },
             ]
         });
-    }
+    },
+
+    GetConfiguration: function (application, key) {
+
+        configurationAPI.GetConfiguration(application, key, function (response) {
+
+
+            if (response) {
+
+
+                var configurationValue = "<tr><td><b> Configure: " + response.Application + " " + response.Key + " </b></td><td>" + response.Value + "</td></tr>";
+                $("table-configuration-details").DataTable(configurationValue);
+       
+            }
+            else {
+                console.log(response);
+            }
+        });
+    },
+
 
 };
 
