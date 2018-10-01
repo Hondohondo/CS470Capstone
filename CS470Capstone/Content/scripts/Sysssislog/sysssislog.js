@@ -1,9 +1,9 @@
 ﻿var syssislog = {
     Initialize: function () {
-        Sysssislog.InitializeLogsDataTable();
+        sysssislog.InitializeLogsDataTable();
 
         $(document).on("click", "#button-view-full-sysssislog", function () {
-            Sysssislog.GetSysssislog($(this).attr("data-sysssislog-id"));
+            sysssislog.GetSysssislog($(this).attr("data-sysssislog-id"));
         });
     },
 
