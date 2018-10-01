@@ -59,7 +59,7 @@
                 $("#log-details").removeClass("hidden");
             }
             else {
-                console.log(response)
+                console.log(response);
             }
         });
     },
