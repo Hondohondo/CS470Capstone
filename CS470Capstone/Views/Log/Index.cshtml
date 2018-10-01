@@ -6,10 +6,17 @@
 </head>
 <body>
     <div class="container">
+        <h2>Logs</h2>
+        <br />
         <div class="row">
-            <h2>Logs</h2>
-            <br />
-            <div class="col-lg-12">
+            <div class="spinner hidden" id="loading-logs">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+            <div id="logs">
                 <table id="table-log" class="table table-bordered">
                     <thead>
                         <tr>

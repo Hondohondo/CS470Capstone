@@ -1,5 +1,6 @@
 ﻿var log = {
     Initialize: function () {
+
         log.InitializeLogsDataTable();
 
         $(document).on("click", "#button-view-full-log", function () {
@@ -21,8 +22,42 @@
         });
     },
 
+    InitializeLogsDataTable: function () {
+
+        $("#table-log").dataTable({
+            ajax: {
+                url: "../Log/GetLogForDataTable",
+                type: "POST",
+                datatype: "json",
+            },
+            rowId: "LogID",
+            serverSide: true,
+            searching: true,
+            pageLength: 10,
+            lengthChange: true,
+            order: [1, "desc"],
+            columns: [
+                { data: "Title", sortable: true, searchable: true, name: "Title" },
+                { data: "Severity", sortable: true, searchable: false, name: "Severity" },
+                { data: "Priority", sortable: true, searchable: false, name: "Priority" },
+                { data: "Timestamp", sortable: true, searchable: false, name: "Timestamp" },
+                { data: "AuthenticatedUser", sortable: true, searchable: false, name: "AuthenticatedUser" },
+            ],
+            columnDefs: [
+                {
+                    targets: 5,
+                    visible: true,
+                    render: function (data, type, row) {
+                        return '<button class="btn btn-sm btn-primary" id="button-view-full-log" data-log-id="' + row.LogID + '"><span class="fa fa-edit"><span></button>'
+                    }
+                },
+            ]
+        });
+    },
+
     GetLog: function (logID) {
-        //open modal
+
+        $("#loading-log-details").removeClass("hidden");
         $("#modal-log-details").modal("show");
 
         logAPI.GetLog(logID, function (response) {
@@ -59,44 +94,13 @@
                 //finish building table and append all columns to table
                 var EntityKey = "<tr><td><b> EntityKey: </b></td><td>" + response.EntityKey + "</td></tr>";
                 $("#table-log-details > tbody:last-child").append(LogID + EventID + Priority + Severity + Title + Timestamp + MachineName + AppDomainName + ProcessID + ProcessName + ThreadName + Win32ThreadId + DoctorKey + AuthenticatedUser + Message + FormattedMessage + EntityKey);
+
+                $("#loading-log-details").addClass("hidden");
                 $("#log-details").removeClass("hidden");
             }
             else {
                 console.log(response);
             }
-        });
-    },
-
-    InitializeLogsDataTable: function () {
-        $("#table-log").dataTable({
-            ajax: {
-                url: "../Log/GetLogForDataTable",
-                type: "POST",
-                datatype: "json",
-            },
-            rowId: "LogID",
-            serverSide: true,
-            searching: true,
-            pageLength: 10,
-            lengthChange: true,
-            order: [1, "desc"],
-            columns: [
-                { data: "Title", sortable: true, searchable: true, name: "Title" },
-                { data: "Severity", sortable: true, searchable: false, name: "Severity" },
-                { data: "Priority", sortable: true, searchable: false, name: "Priority" },
-                { data: "Timestamp", sortable: true, searchable: false, name: "Timestamp" },
-                { data: "AuthenticatedUser", sortable: true, searchable: false, name: "AuthenticatedUser"},
-            ],
-            columnDefs: [
-                {
-                    targets: 5,
-                    visible: true,
-                    render: function (data, type, row) {
-                        // data-toggle="modal" data-target="#modal-log"
-                        return '<button class="btn btn-sm btn-primary" id="button-view-full-log" data-log-id="' + row.LogID +'"><span class="fa fa-edit"><span></button>'
-                    }
-                },
-            ]
         });
     },
 
