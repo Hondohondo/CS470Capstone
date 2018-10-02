@@ -40,9 +40,9 @@
             },
             rowId: "LogID",
             serverSide: true,
-            searching: true,
+            searching: false,
             pageLength: 10,
-            lengthChange: true,
+            lengthChange: false,
             order: [1, "desc"],
             columns: [
                 { data: "Title", sortable: true, searchable: true, name: "Title" },

@@ -4,6 +4,8 @@ using System.Linq.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
+using CCFLoggingConfig.Models;
 
 namespace CCFLoggingConfig.Controllers
 {
@@ -23,7 +25,8 @@ namespace CCFLoggingConfig.Controllers
                 using (var db = new logconfigEntities())
                 {
                     var log = db.Logs.Find(logID);
-                    return Json(log);
+                    var request = Mapper.Map<LogViewModel>(log);
+                    return Json(request);
                 }
             }
             catch (Exception ex)
@@ -41,8 +44,6 @@ namespace CCFLoggingConfig.Controllers
                 var draw = Request.Form.GetValues("draw").FirstOrDefault();
                 var start = Request.Form.GetValues("start").FirstOrDefault();
                 var length = Request.Form.GetValues("length").FirstOrDefault();
-
-                var searchValue = Request.Form["search[value]"].FirstOrDefault().ToString();
 
                 var sortDirection = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
                 var sortColumnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
@@ -68,23 +69,18 @@ namespace CCFLoggingConfig.Controllers
                         query = query.OrderBy(sortColumn + " " + sortDirection);
                     }
 
-                    // TODO:
-                    // fix this
-
-                    ////Search
-                    if (!string.IsNullOrEmpty(searchValue))
-                    {
-                        query = query.Where(l => l.Title.Contains(searchValue) ||
-                            l.AuthenticatedUser.Contains(searchValue));
-                    }
-
                     //total number of rows count     
                     recordsTotal = query.Count();
                     //Paging     
-                    var data = query.Skip(skip).Take(pageSize).ToList();
+                    var data = query
+                        .Skip(skip)
+                        .Take(pageSize)
+                        .ToList();
+
+                    var requests = Mapper.Map<List<LogViewModel>>(data);
 
                     //Returning Json Data    
-                    return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+                    return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = requests });
                 }
             }
             catch(Exception ex)
