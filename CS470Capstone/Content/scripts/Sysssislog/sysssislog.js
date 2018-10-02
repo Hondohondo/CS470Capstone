@@ -1,9 +1,23 @@
-﻿var syssislog = {
+﻿var sysssislog = {
     Initialize: function () {
-        sysssislog.InitializeLogsDataTable();
+        sysssislog.InitializeSysssislogsDataTable();
 
         $(document).on("click", "#button-view-full-sysssislog", function () {
-            sysssislog.GetSysssislog($(this).attr("data-sysssislog-id"));
+            sysssislog.GetSysssislog($(this).attr("data-id"));
+        });
+
+        $(document).on("click", "#button-view-pretty-json", function () {
+            $("#modal-pretty-json").modal("show");
+        });
+
+        //close log details modal
+        $(document).on("hidden.bs.modal", "#modal-sysssislog-details", function () {
+            $("#table-sysssislog-details > tbody:last-child").empty();
+        });
+
+        //close pretty json modal
+        $(document).on("hidden.bs.modal", "#modal-pretty-json", function () {
+            $("#pretty-json").empty();
         });
     },
 
@@ -25,14 +39,21 @@
                 var Operator = "<tr><td><b> Operator: </b></td><td>" + response.Operator + "</td></tr>";
                 var Source = "<tr><td><b> Source: </b></td><td>" + response.Source + "</td></tr>";
                 var SourceID = "<tr><td><b> SourceID: </b></td><td>" + response.SourceID + "</td></tr>";
-                var ExectionID = "<tr><td><b> ExecutionID: </b></td><td>" + response.ExectionID + "</td></tr>";
+                var ExecutionID = "<tr><td><b> ExecutionID: </b></td><td>" + response.ExecutionID + "</td></tr>";
                 var StartTime = "<tr><td><b> StartTime: </b></td><td>" + response.StartTime + "</td></tr>";
                 var EndTime = "<tr><td><b> EndTime: </b></td><td>" + response.EndTime + "</td></tr>";
                 var DataCode = "<tr><td><b> DataCode: </b></td><td>" + response.DataCode + "</td></tr>";
-                var DataBytes = "<tr><td><b> ThreadName: </b></td><td>" + response.DataBytes + "</td></tr>";
+                var DataBytes = "<tr><td><b> DataBytes: </b></td><td>" + response.DataBytes + "</td></tr>";
                 var Message = "<tr><td><b> Message: </b></td><td>" + response.Message + "</td></tr>";
+                
 
-                $("#table-sysssislog-details > tbody:last-child").append(ID + Event + Computer + Operator + Source + SourceID + ExectionID + StartTime + EndTime + DataCode + DataBytes + Message);
+                var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary"><span class="fa fa-search"></span></button>&nbsp;</td></tr>';
+                var pretty = JSON.stringify(response.FormattedMessage, undefined, 5);
+                var json = JSON.parse(pretty);
+                $("#pretty-json").append(json);
+                
+                var EntityKey = "<tr><td><b> EntityKey: </b></td><td>" + response.EntityKey + "</td></tr>";
+                $("#table-sysssislog-details > tbody:last-child").append(ID + Event + Computer + Operator + Source + SourceID + ExecutionID + StartTime + EndTime + DataCode + DataBytes + Message + FormattedMessage + EntityKey);
                 $("#sysssislog-details").removeClass("hidden");
             }
             else {
@@ -41,7 +62,7 @@
         });
     },
 
-    InitializeLogsDataTable: function () {
+    InitializeSysssislogsDataTable: function () {
         $("#table-sysssislog").dataTable({
             ajax: {
                 url: "../Sysssislog/GetSysssislogForDataTable",
@@ -59,7 +80,7 @@
                 { data: "Event", sortable: true, searchable: false, name: "Event" },
                 { data: "Computer", sortable: true, searchable: false, name: "Computer" },
                 { data: "Operator", sortable: true, searchable: false, name: "Operator" },
-              
+       
             ],
             columnDefs: [
                 {
@@ -67,13 +88,12 @@
                     visible: true,
                     render: function (data, type, row) {
                         // data-toggle="modal" data-target="#modal-log"
-                        return '<button class="btn btn-sm btn-primary" id="button-view-full-sysssislog" data-log-id="' + row.ID + '"><span class="fa fa-edit"><span></button>'
+                        return '<button class="btn btn-sm btn-primary" id="button-view-full-sysssislog" data-id="' + row.ID +'"><span class="fa fa-edit"><span></button>'
                     }
                 },
             ]
         });
     }
-
 }
 
 $(document).ready(sysssislog.Initialize());
