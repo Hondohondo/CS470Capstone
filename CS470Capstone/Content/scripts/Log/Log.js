@@ -8,18 +8,26 @@
         });
 
         $(document).on("click", "#button-view-pretty-json", function () {
+            $("#modal-pretty-json .modal-title").text("Formatted Message for Log " + $(this).attr("data-log-id"));
             $("#modal-pretty-json").modal("show");
+            $("#modal-log-details").modal("hide");
         });
 
         //close log details modal
         $(document).on("hidden.bs.modal", "#modal-log-details", function () {
-            $("#table-log-details > tbody:last-child").empty();
+            
         });
 
         //close pretty json modal
         $(document).on("hidden.bs.modal", "#modal-pretty-json", function () {
-            //theoretically we would empty the well containing the formatted message but we have not figured out how to save state between modal windows yet.
+            $("#modal-pretty-json").modal("hide");
+            $("#modal-log-details").modal("show");
         });
+    },
+
+    ResetLogModals: function () {
+        $("#table-log-details > tbody:last-child").empty();
+        $("#pretty-json").empty();
     },
 
     InitializeLogsDataTable: function () {
@@ -59,11 +67,10 @@
 
         $("#loading-log-details").removeClass("hidden");
         $("#modal-log-details").modal("show");
+        log.ResetLogModals();
 
         logAPI.GetLog(logID, function (response) {
             if (response) {
-                //build table with data
-                //possible use handlebars template?
 
                 $("#log-details").addClass("hidden");
                 $("#table-log-details > tbody:last-child").empty();
@@ -85,8 +92,8 @@
                 var Message = "<tr><td><b> Message: </b></td><td>" + response.Message + "</td></tr>";
 
                 //formatted message parsing and syntax highlighting
-                var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary"><span class="fa fa-search"></span></button>&nbsp;</td></tr>';
-                var no_backslashes = response.FormattedMessage.replace(/\\/g, "/");
+                var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary" data-log-id="' + response.LogID + '"><span class="fa fa-share"></span></button>&nbsp;</td></tr>';
+                var no_backslashes = response.FormattedMessage.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
                 var parsed = JSON.parse(no_backslashes);
                 var syntax = log.JSONSyntaxHighlight(parsed);
                 $("#pretty-json").append(syntax);

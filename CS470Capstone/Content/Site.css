@@ -47,10 +47,16 @@ textarea {
     color: orange;
 }
 
+/* remove margin from bottom of bootstrap modal */
+#modal-log-details .modal-footer {
+    margin-top: 0px;
+}
 
+#modal-pretty-json .modal-footer {
+    margin-top: 0px;
+}
 
 /* CSS for loading indicator */
-
 .spinner {
     margin: 100px auto;
     width: 50px;
