@@ -48,9 +48,9 @@
 
             if (response) {
 
-
-                var configurationValue = "<tr><td><b> Configure: " + response.Application + " " + response.Key + " </b></td><td>" + response.Value + "</td></tr>";
-                $("table-configuration-details").DataTable(configurationValue);
+               
+                // var configurationValue = "<tr><td><b> Configure: " + response.Application + " " + response.Key + " </b></td><td>" + response.Value + "</td></tr>";
+                $("#modal-title-configuration").text("Configure " + response.Application + " " + response.Key);
        
             }
             else {

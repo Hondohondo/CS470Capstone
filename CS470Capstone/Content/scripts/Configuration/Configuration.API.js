@@ -1,5 +1,5 @@
 ﻿var configurationAPI = {
-    GetConfiguration: function (application, key) {
+    GetConfiguration: function (application, key, callback) {
         $.ajax({
             type: "POST",
             url: "../Configuration/GetConfiguration",
