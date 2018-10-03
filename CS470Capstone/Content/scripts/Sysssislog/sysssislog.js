@@ -21,9 +21,16 @@
         });
     },
 
+    ResetSysssislogModals: function () {
+        $("#table-sysssislog-details > tbody:last-child").empty();
+        $("#pretty-json").empty();
+    },
+
     GetSysssislog: function (ID) {
         //open modal
         $("#modal-sysssislog-details").modal("show");
+        $("#modal-sysssislog-details").modal("show");
+        sysssislog.ResetSysssislogModals();
 
         sysssislogAPI.GetSysssislog(ID, function (response) {
             if (response) {
@@ -71,15 +78,15 @@
             },
             rowId: "ID",
             serverSide: true,
-            searching: true,
+            searching: false,
             pageLength: 10,
-            lengthChange: true,
+            lengthChange: false,
             order: [1, "desc"],
             columns: [
                 { data: "Message", sortable: true, searchable: true, name: "Message" },
                 { data: "Event", sortable: true, searchable: false, name: "Event" },
-                { data: "Computer", sortable: true, searchable: false, name: "Computer" },
-                { data: "Operator", sortable: true, searchable: false, name: "Operator" },
+                { data: "Computer", sortable: true, searchable: true, name: "Computer" },
+                { data: "Operator", sortable: true, searchable: true, name: "Operator" },
        
             ],
             columnDefs: [
