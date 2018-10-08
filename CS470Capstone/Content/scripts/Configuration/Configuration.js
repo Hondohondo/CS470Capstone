@@ -48,10 +48,21 @@
 
             if (response) {
 
+               
+                // var configurationValue = "<tr><td><b> Configure: " + response.Application + " " + response.Key + " </b></td><td>" + response.Value + "</td></tr>";
+                $("#modal-title-configuration").text("Configure " + response.Application + ": " + response.Key);
 
-                var configurationValue = "<tr><td><b> Configure: " + response.Application + " " + response.Key + " </b></td><td>" + response.Value + "</td></tr>";
-                $("table-configuration-details").DataTable(configurationValue);
-       
+                $("#configuration-details").addClass("hidden");
+                $("#table-configuration-details > tbody:last-child").empty();
+
+                var configValue = "<tr><td><b> Config Value: </b></td><td>" + response.Value + "</td></tr>";
+                var editValue = "<tr><td><b> New Value:</b></td><td><input type=\"text\" value=\"\"\"></td></tr>";
+
+                $("#table-configuration-details > tbody:last-child").append(configValue + editValue);
+
+
+                //$("#loading-log-details").addClass("hidden");
+                $("#configuration-details").removeClass("hidden");
             }
             else {
                 console.log(response);
