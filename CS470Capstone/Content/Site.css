@@ -115,3 +115,7 @@ textarea {
         -webkit-transform: scaleY(1.0);
     }
 }
+
+#no-logs {
+    text-align: center;
+}

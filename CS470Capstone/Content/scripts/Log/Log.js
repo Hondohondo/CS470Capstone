@@ -43,7 +43,7 @@
             searching: false,
             pageLength: 10,
             lengthChange: false,
-            order: [1, "desc"],
+            order: [0, "asc"],
             columns: [
                 { data: "Title", sortable: true, searchable: true, name: "Title" },
                 { data: "Severity", sortable: true, searchable: false, name: "Severity" },
@@ -92,11 +92,18 @@
                 var Message = "<tr><td><b> Message: </b></td><td>" + response.Message + "</td></tr>";
 
                 //formatted message parsing and syntax highlighting
-                var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary" data-log-id="' + response.LogID + '"><span class="fa fa-share"></span></button>&nbsp;</td></tr>';
-                var no_backslashes = response.FormattedMessage.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
-                var parsed = JSON.parse(no_backslashes);
-                var syntax = log.JSONSyntaxHighlight(parsed);
-                $("#pretty-json").append(syntax);
+                if (response.FormattedMessage){
+                    var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary" data-log-id="' + response.LogID + '"><span class="fa fa-share"></span></button>&nbsp;</td></tr>';
+                    var no_backslashes = response.FormattedMessage.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
+                    var parsed = JSON.parse(no_backslashes);
+                    var syntax = log.JSONSyntaxHighlight(parsed);
+                    $("#pretty-json").append(syntax);
+                }
+                else {
+                    var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td>NULL</td></tr>';
+                }
+
+                
 
                 //finish building table and append all columns to table
                 var EntityKey = "<tr><td><b> EntityKey: </b></td><td>" + response.EntityKey + "</td></tr>";
