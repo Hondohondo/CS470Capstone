@@ -116,9 +116,6 @@ textarea {
     }
 }
 
-#changeConfigSubmit {
-    padding-bottom: 10px;
-}
-#newConfigurationValue {
-    width: 100%;
+#no-logs {
+    text-align: center;
 }
