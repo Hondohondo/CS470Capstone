@@ -1,4 +1,5 @@
 ﻿var configuration = {
+
     Initialize: function () {
         configuration.InitializeConfigDataTable();
 
@@ -6,6 +7,18 @@
         $(document).on("click", "#button-view-configuration", function () {
             configuration.GetConfiguration($(this).attr("data-configurationApp"), $(this).attr("data-configurationKey"));
             $("#modal-configuration").modal("show");
+        });
+
+        $(document).on("click", "#buttonSubmitConfigurationChange", function () {
+            var newValue = $("#newConfigurationValue").val();
+            var changedApplication = $(this).attr("data-app");
+            var changedKey = $(this).attr("data-key");
+            console.log(newValue, changedApplication, changedKey);
+
+            if (newValue !== "") {
+                configurationAPI.submitConfigurationChange(changedApplication, changedKey, newValue);
+            }
+
         });
 
     },
@@ -56,8 +69,11 @@
                 $("#table-configuration-details > tbody:last-child").empty();
 
                 var configValue = "<tr><td><b> Config Value: </b></td><td>" + response.Value + "</td></tr>";
-                var editValue = "<tr><td><b> New Value:</b></td><td><input type=\"text\" value=\"\"\"></td></tr>";
+                var editValue = "<tr><td><b> New Value:</b></td><td><textarea id=\"newConfigurationValue\" type=\"text\" value=\"\"\"></textarea></td></tr>";
 
+                //set the submit change button to have app and key info
+                $("#buttonSubmitConfigurationChange").attr("data-app", response.Application);
+                $("#buttonSubmitConfigurationChange").attr("data-key", response.Key);
                 $("#table-configuration-details > tbody:last-child").append(configValue + editValue);
 
 

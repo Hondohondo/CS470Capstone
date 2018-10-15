@@ -89,5 +89,26 @@ namespace CCFLoggingConfig.Controllers
             }
 
         }
+
+
+        [HttpPost]
+        public JsonResult SetConfiguration(String application, String key, String value)
+        {
+            try
+            {
+                using (var db = new logconfigEntities())
+                {
+                    var config = db.Configurations.Find(application, key);
+                    config.Value = value;
+                    db.SaveChanges();
+                    return Json("success");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+        }
     }
 }

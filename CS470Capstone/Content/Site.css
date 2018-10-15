@@ -115,3 +115,10 @@ textarea {
         -webkit-transform: scaleY(1.0);
     }
 }
+
+#changeConfigSubmit {
+    padding-bottom: 10px;
+}
+#newConfigurationValue {
+    width: 100%;
+}
