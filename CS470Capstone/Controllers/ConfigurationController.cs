@@ -101,7 +101,7 @@ namespace CCFLoggingConfig.Controllers
                     var config = db.Configurations.Find(application, key);
                     config.Value = value;
                     db.SaveChanges();
-                    return Json("success");
+                    return Json("successfully changed to" + value );
                 }
             }
             catch (Exception ex)

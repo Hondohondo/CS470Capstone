@@ -11,6 +11,7 @@
             }),
             success: function (data) {
                 typeof callback === "function" && callback(data);
+
             },
             error: function (xhr) {
                 alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
@@ -18,7 +19,7 @@
         });
     },
 
-    submitConfigurationChange: function (application, key, value, callback) {
+    submitConfigurationChange: async function (application, key, value, callback) {
         $.ajax({
             type: "POST",
             url: "../Configuration/SetConfiguration",
@@ -29,8 +30,10 @@
                 key: key,
                 value: value
             }),
+            //on successful change, update modal info.
             success: function (data) {
                 typeof callback === "function" && callback(data);
+                configuration.GetConfiguration(application, key);
             },
             error: function (xhr) {
                 alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);

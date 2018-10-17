@@ -1,4 +1,6 @@
-﻿var configuration = {
+﻿
+
+var configuration = {
 
     Initialize: function () {
         configuration.InitializeConfigDataTable();
@@ -10,15 +12,18 @@
         });
 
         $(document).on("click", "#buttonSubmitConfigurationChange", function () {
+
+            
             var newValue = $("#newConfigurationValue").val();
             var changedApplication = $(this).attr("data-app");
             var changedKey = $(this).attr("data-key");
             console.log(newValue, changedApplication, changedKey);
 
             if (newValue !== "") {
-                configurationAPI.submitConfigurationChange(changedApplication, changedKey, newValue);
+                configurationAPI.submitConfigurationChange(changedApplication, changedKey, newValue);                       
             }
-
+            
+            $("#modal-configuration").modal("show");
         });
 
     },
@@ -28,7 +33,7 @@
             ajax: {
                 url: "../Configuration/GetConfigurationForDataTable",
                 type: "POST",
-                datatype: "json",
+                datatype: "json"
             },
             rowId: "Key",
             serverSide: true,
@@ -49,19 +54,18 @@
   
                         return '<button class="btn btn-sm btn-primary" id="button-view-configuration" data-configurationApp="' + row.Application + '" data-configurationKey= "'+ row.Key + '"><span class="fa fa-edit"><span></button>';
                     }
-                },
+                }
             ]
         });
     },
 
-    GetConfiguration: function (application, key) {
+    GetConfiguration: async function (application, key) {
 
         configurationAPI.GetConfiguration(application, key, function (response) {
 
 
             if (response) {
-
-               
+          
                 // var configurationValue = "<tr><td><b> Configure: " + response.Application + " " + response.Key + " </b></td><td>" + response.Value + "</td></tr>";
                 $("#modal-title-configuration").text("Configure " + response.Application + ": " + response.Key);
 
@@ -70,21 +74,20 @@
 
                 var configValue = "<tr><td><b> Config Value: </b></td><td>" + response.Value + "</td></tr>";
                 var editValue = "<tr><td><b> New Value:</b></td><td><textarea id=\"newConfigurationValue\" type=\"text\" value=\"\"\"></textarea></td></tr>";
-
+               
                 //set the submit change button to have app and key info
                 $("#buttonSubmitConfigurationChange").attr("data-app", response.Application);
                 $("#buttonSubmitConfigurationChange").attr("data-key", response.Key);
                 $("#table-configuration-details > tbody:last-child").append(configValue + editValue);
 
-
-                //$("#loading-log-details").addClass("hidden");
                 $("#configuration-details").removeClass("hidden");
+                $("#modal-configuration").modal("show");
             }
             else {
                 console.log(response);
             }
         });
-    },
+    }
 
 
 };
