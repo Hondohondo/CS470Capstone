@@ -44,11 +44,12 @@ var configuration = {
             columns: [
                 { data: "Application", sortable: true, searchable: true, name: "Application" },
                 { data: "Key", sortable: true, searchable: true, name: "Key" },
-                { Name: "Actions", sortable: false, searchable: false }
+                { Name: "Quick Values", sortable: true, searchable: true },
+                { Name: "Edit Quick Values", sortable: false, searchable: false }
             ],
             columnDefs: [
                 {
-                    targets: 2,
+                    targets: 3,
                     visible: true,
                     render: function (data, type, row) {
   
@@ -59,7 +60,7 @@ var configuration = {
         });
     },
 
-    GetConfiguration: async function (application, key) {
+    GetConfiguration: function (application, key) {
 
         configurationAPI.GetConfiguration(application, key, function (response) {
 
@@ -72,7 +73,7 @@ var configuration = {
                 $("#configuration-details").addClass("hidden");
                 $("#table-configuration-details > tbody:last-child").empty();
 
-                var configValue = "<tr><td><b> Config Value: </b></td><td>" + response.Value + "</td></tr>";
+                var configValue = "<tr><td><b> Config Values: </b></td><td>" + response.Value + "</td></tr>";
                 var editValue = "<tr><td><b> New Value:</b></td><td><textarea id=\"newConfigurationValue\" type=\"text\" value=\"\"\"></textarea></td></tr>";
                
                 //set the submit change button to have app and key info
