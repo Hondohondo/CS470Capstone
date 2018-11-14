@@ -37,6 +37,17 @@
           <Property Name="EntityKey" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'logconfig.dbo.quickConfiguration' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="quickConfiguration">
+          <Key>
+            <PropertyRef Name="Application" />
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Application" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SSIS Configurations">
           <Key>
@@ -70,6 +81,13 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
           <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysssislog" EntityType="Self.sysssislog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="quickConfiguration" EntityType="Self.quickConfiguration" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [quickConfiguration].[Application] AS [Application], 
+    [quickConfiguration].[Key] AS [Key], 
+    [quickConfiguration].[Value] AS [Value]
+    FROM [dbo].[quickConfiguration] AS [quickConfiguration]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="SSIS Configurations" EntityType="Self.SSIS Configurations" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [SSIS Configurations].[ConfigurationFilter] AS [ConfigurationFilter], 
@@ -147,7 +165,17 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="sysssislogs" EntityType="Self.sysssislog" />
           <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configuration" />
+          <EntitySet Name="quickConfigurations" EntityType="logconfigModel.quickConfiguration" />
         </EntityContainer>
+        <EntityType Name="quickConfiguration">
+          <Key>
+            <PropertyRef Name="Application" />
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Application" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -211,6 +239,15 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
                 <ScalarProperty Name="ConfiguredValue" ColumnName="ConfiguredValue" />
                 <ScalarProperty Name="PackagePath" ColumnName="PackagePath" />
                 <ScalarProperty Name="ConfiguredValueType" ColumnName="ConfiguredValueType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="quickConfigurations">
+            <EntityTypeMapping TypeName="logconfigModel.quickConfiguration">
+              <MappingFragment StoreEntitySet="quickConfiguration">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Application" ColumnName="Application" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
