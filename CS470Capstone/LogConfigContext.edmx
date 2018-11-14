@@ -36,8 +36,6 @@
           <Property Name="FormattedMessage" Type="nvarchar(max)" />
           <Property Name="EntityKey" Type="nvarchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'logconfig.dbo.quickConfiguration' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="quickConfiguration">
           <Key>
             <PropertyRef Name="Application" />
@@ -80,14 +78,8 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
         <EntityContainer Name="logconfigModelStoreContainer">
           <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="quickConfiguration" EntityType="Self.quickConfiguration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysssislog" EntityType="Self.sysssislog" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="quickConfiguration" EntityType="Self.quickConfiguration" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [quickConfiguration].[Application] AS [Application], 
-    [quickConfiguration].[Key] AS [Key], 
-    [quickConfiguration].[Value] AS [Value]
-    FROM [dbo].[quickConfiguration] AS [quickConfiguration]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="SSIS Configurations" EntityType="Self.SSIS Configurations" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [SSIS Configurations].[ConfigurationFilter] AS [ConfigurationFilter], 
