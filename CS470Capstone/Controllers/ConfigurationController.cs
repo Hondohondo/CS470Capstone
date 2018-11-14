@@ -110,5 +110,30 @@ namespace CCFLoggingConfig.Controllers
             }
 
         }
+
+        [HttpPost]
+        public JsonResult SetQuickConfiguration(String application, String key, String value)
+        {
+            try
+            {
+                using (var db = new logconfigEntities())
+                {
+                    quickConfiguration newRecord = new quickConfiguration
+                    {
+                        Application = application,
+                        Key = key,
+                        Value = value
+                    };
+                    db.quickConfigurations.Add(newRecord);
+                    db.SaveChanges();
+                    return Json("true");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("false" + ex);
+            }
+
+        }
     }
 }
