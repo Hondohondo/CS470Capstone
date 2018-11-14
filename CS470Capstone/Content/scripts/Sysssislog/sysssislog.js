@@ -113,11 +113,11 @@
             lengthChange: false,
             order: [1, "desc"],
             columns: [
-                { data: "Message", sortable: true, searchable: true, name: "Message" },
-                { data: "Event", sortable: true, searchable: false, name: "Event" },
-                { data: "Computer", sortable: true, searchable: true, name: "Computer" },
-                { data: "Operator", sortable: true, searchable: true, name: "Operator" },
-       
+                { data: "message", sortable: true, searchable: true, name: "Message" },
+                { data: "event", sortable: true, searchable: false, name: "Event" },
+                { data: "computer", sortable: true, searchable: true, name: "Computer" },
+                { data: "operator", sortable: true, searchable: true, name: "Operator" },
+                { data: "source", sortable: true, searchable: true, name: "Source" },
             ],
             columnDefs: [
                 {
