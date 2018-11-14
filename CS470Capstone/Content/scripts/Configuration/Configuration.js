@@ -22,7 +22,16 @@ var configuration = {
             if (newValue !== "") {
                 configurationAPI.submitConfigurationChange(changedApplication, changedKey, newValue);                       
             }
-            
+
+            //if a quick configuration value was selected, send the type to the database, this will allow the datatable to have a quick config option, specified by the user
+            var quickConfigurationType = $("#quickConfigurationType").val();
+
+            console.log(newValue, changedApplication, quickConfigurationType);
+
+            if (quickConfigurationType !== "") {
+                configurationAPI.submitQuickConfigurationType(changedApplication, changedKey, quickConfigurationType);
+            }
+
             $("#modal-configuration").modal("show");
         });
 
@@ -73,7 +82,7 @@ var configuration = {
                 $("#configuration-details").addClass("hidden");
                 $("#table-configuration-details > tbody:last-child").empty();
 
-                var configValue = "<tr><td><b> Config Values: </b></td><td>" + response.Value + "</td></tr>";
+                var configValue = "<tr><td><b> Current Values: </b></td><td>" + response.Value + "</td></tr>";
                 var editValue = "<tr><td><b> New Value:</b></td><td><textarea id=\"newConfigurationValue\" type=\"text\" value=\"\"\"></textarea></td></tr>";
                
                 //set the submit change button to have app and key info
