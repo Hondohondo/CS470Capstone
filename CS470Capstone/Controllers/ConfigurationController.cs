@@ -118,7 +118,7 @@ namespace CCFLoggingConfig.Controllers
             {
                 using (var db = new logconfigEntities())
                 {
-                    quickConfiguration newRecord = new quickConfiguration
+                    quickConfiguration  newRecord = new quickConfiguration
                     {
                         Application = application,
                         Key = key,
