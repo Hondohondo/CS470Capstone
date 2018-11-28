@@ -77,7 +77,7 @@ namespace CCFLoggingConfig.Controllers
                     if (!string.IsNullOrEmpty(searchValue))
                     {
                         query = query.Where(l => l.computer.Contains(searchValue) ||
-                            l.@operator.Contains(searchValue));
+                            l.@operator.Contains(searchValue)) ;
                     }
 
                     //total number of rows count     
