@@ -17,5 +17,7 @@ namespace CCFLoggingConfig
         public string Application { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
+    
+        public virtual Configuration Configuration { get; set; }
     }
 }

@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="logconfigModel.sysssislog" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="logconfigModel.SSIS_Configuration" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="logconfigModel.quickConfiguration" Width="1.5" PointX="8.875" PointY="0.75" />
+        <AssociationConnector Association="logconfigModel.FK__quickConfigurati__05D8E0BE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

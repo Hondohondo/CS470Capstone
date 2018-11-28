@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace CCFLoggingConfig.Controllers
 {
@@ -38,7 +39,7 @@ namespace CCFLoggingConfig.Controllers
 
                 using (var db = new logconfigEntities())
                 {
-                    IQueryable<Configuration> query = db.Configurations;
+                    IQueryable<Configuration> query = db.Configurations.Include(c => c.quickConfiguration);
 
                     //Sorting    
                     if (sortDirection.ToLowerInvariant() == "asc")
