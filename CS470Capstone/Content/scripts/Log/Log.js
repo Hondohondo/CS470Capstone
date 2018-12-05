@@ -8,24 +8,37 @@
         });
 
         $(document).on("click", "#button-view-pretty-json", function () {
-            $("#modal-pretty-json .modal-title").text("Formatted Message for Log " + $(this).attr("data-log-id"));
+            var logID = $(this).attr("data-log-id");
+            $("#modal-pretty-json .modal-title").text("Formatted Message for Log " + logID);
             $("#modal-pretty-json").modal("show");
-            $("#modal-log-details").modal("hide");
         });
 
-        //close log details modal
-        $(document).on("hidden.bs.modal", "#modal-log-details", function () {
+        //use value stored in hidden field to avoid additional ajax call
+        $(document).on("click", "#button-view-pretty-json-from-table", function () {
+            var logID = $(this).attr("data-log-id");
+            var encoded = $("#pretty-json-log-id-" + logID).val();
+            var decoded = decodeURIComponent(encoded);
+            var no_backslashes = decoded.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
+            var parsed = JSON.parse(no_backslashes);
+            var syntax = log.JSONSyntaxHighlight(parsed);
+            $("#pretty-json").append(syntax);
             
+            $("#modal-pretty-json .modal-title").text("Formatted Message for Log " + logID);
+            $("#modal-pretty-json").modal("show");
         });
 
-        //close pretty json modal
+        //want these to act independantly of each other
         $(document).on("hidden.bs.modal", "#modal-pretty-json", function () {
-            $("#modal-pretty-json").modal("hide");
-            $("#modal-log-details").modal("show");
+            $("#modal-pretty-json .modal-title").text('Formatted Message');
+            $("#pretty-json").empty();
+        });
+        $(document).on("hidden.bs.modal", "#modal-view-full-log", function () {
+            $("#table-log-details > tbody:last-child").empty();
         });
     },
 
     ResetLogModals: function () {
+        $("#modal-pretty-json .modal-title").text('Formatted Message');
         $("#table-log-details > tbody:last-child").empty();
         $("#pretty-json").empty();
     },
@@ -56,7 +69,10 @@
                     targets: 5,
                     visible: true,
                     render: function (data, type, row) {
-                        return '<button class="btn btn-sm btn-primary" id="button-view-full-log" data-log-id="' + row.LogID + '"><span class="fa fa-edit"><span></button>'
+                        var encoded = encodeURIComponent(row.FormattedMessage); //encode json data to store in hidden field
+                        return '<button class="btn btn-sm btn-primary" id="button-view-full-log" data-log-id="' + row.LogID + '"><span class="fa fa-edit"><span></button> &nbsp;' +
+                            '<button class="btn btn-sm btn-primary" id="button-view-pretty-json-from-table" data-log-id="' + row.LogID + '"><span class="fa fa-share"><span></button>' +
+                            '<input id="pretty-json-log-id-' + row.LogID + '"type="text" value="' + encoded + '" hidden>';
                     }
                 },
             ]
@@ -91,16 +107,17 @@
                 var AuthenticatedUser = "<tr><td><b> WinAuthenticatedUser32ThreadId: </b></td><td>" + response.AuthenticatedUser + "</td></tr>";
                 var Message = "<tr><td><b> Message: </b></td><td>" + response.Message + "</td></tr>";
 
+                var formattedMessage = "";
                 //formatted message parsing and syntax highlighting
                 if (response.FormattedMessage){
-                    var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary" data-log-id="' + response.LogID + '"><span class="fa fa-share"></span></button>&nbsp;</td></tr>';
+                    FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary" data-log-id="' + response.LogID + '"><span class="fa fa-share"></span></button>&nbsp;</td></tr>';
                     var no_backslashes = response.FormattedMessage.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
                     var parsed = JSON.parse(no_backslashes);
                     var syntax = log.JSONSyntaxHighlight(parsed);
                     $("#pretty-json").append(syntax);
                 }
                 else {
-                    var FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td>NULL</td></tr>';
+                    FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td>NULL</td></tr>';
                 }
 
                 
