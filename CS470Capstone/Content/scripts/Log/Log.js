@@ -17,9 +17,9 @@
         $(document).on("click", "#button-view-pretty-json-from-table", function () {
             var logID = $(this).attr("data-log-id");
             var encoded = $("#pretty-json-log-id-" + logID).val();
-            var decoded = decodeURIComponent(encoded);
-            var no_backslashes = decoded.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
-            var parsed = JSON.parse(no_backslashes);
+            var decoded = decodeURIComponent(encoded); //decode encoded formatted message from hidden field
+            var noBackslashes = decoded.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
+            var parsed = JSON.parse(noBackslashes);
             var syntax = log.JSONSyntaxHighlight(parsed);
             $("#pretty-json").append(syntax);
             
@@ -31,9 +31,60 @@
         $(document).on("hidden.bs.modal", "#modal-pretty-json", function () {
             $("#modal-pretty-json .modal-title").text('Formatted Message');
             $("#pretty-json").empty();
+            $("#input-json-search-result").empty(); //THIS ISNT WORKING
         });
-        $(document).on("hidden.bs.modal", "#modal-view-full-log", function () {
+
+        $(document).on("hidden.bs.modal", "#modal-log-details", function () {
             $("#table-log-details > tbody:last-child").empty();
+            $("#pretty-json").empty();
+        });
+
+        //copy json content event handler
+        $(document).on("click", "#copy-json", function () {
+            var $temp = $('<input type="text">');
+            $("body").append($temp);
+            $temp.val($("#pretty-json").text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+        });
+
+        //copy json search result content event handler
+        $(document).on("click", "#copy-json-result", function () {
+            //TODO get this to work. works for some reason in the stackoverflow example but not here. same browser
+            //https://stackoverflow.com/questions/22581345/click-button-copy-to-clipboard-using-jquery
+        });
+
+        $(document).on("click", "#button-search-json", function () {
+            // if there are no values we dont want to do the search so make sure there are values first
+            var search = $("#input-json-search").val();
+            var charLimit = $("#input-json-char-limit").val();
+            console.log(search);
+            console.log(charLimit);
+
+            if (search && charLimit) {
+                console.log("both have values");
+                $("#no-search-value").addClass("hidden");
+                $("#no-char-value").addClass("hidden");
+
+                var json = $("#pretty-json").text();
+                var start = json.indexOf(search);
+                var result = "";
+                if(start != -1){
+                    if (start + charLimit < json.length) {
+                        result = json.substring(start, start + charLimit);
+                    }
+                    else {
+                        result = json.substring(start);
+                    }
+                    $("#input-json-search-result").val(result);
+                }
+                
+                console.log(result);
+            }
+            else {
+                search ? $("#no-search-value").addClass("hidden") : $("#no-search-value").removeClass("hidden");
+                charLimit ? $("#no-char-value").addClass("hidden") : $("#no-char-value").removeClass("hidden");
+            }
         });
     },
 
@@ -41,6 +92,10 @@
         $("#modal-pretty-json .modal-title").text('Formatted Message');
         $("#table-log-details > tbody:last-child").empty();
         $("#pretty-json").empty();
+    },
+
+    InitializeApplicationDropdown: function () {
+        //select distinct applications from table
     },
 
     InitializeLogsDataTable: function () {
@@ -109,18 +164,16 @@
 
                 var formattedMessage = "";
                 //formatted message parsing and syntax highlighting
-                if (response.FormattedMessage){
+                if(response.FormattedMessage){
                     FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary" data-log-id="' + response.LogID + '"><span class="fa fa-share"></span></button>&nbsp;</td></tr>';
-                    var no_backslashes = response.FormattedMessage.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
-                    var parsed = JSON.parse(no_backslashes);
+                    var noBackslashes = response.FormattedMessage.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
+                    var parsed = JSON.parse(noBackslashes);
                     var syntax = log.JSONSyntaxHighlight(parsed);
                     $("#pretty-json").append(syntax);
                 }
-                else {
+                else{
                     FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td>NULL</td></tr>';
                 }
-
-                
 
                 //finish building table and append all columns to table
                 var EntityKey = "<tr><td><b> EntityKey: </b></td><td>" + response.EntityKey + "</td></tr>";
@@ -136,7 +189,6 @@
     },
 
     //function borrowed from https://stackoverflow.com/a/7220510
-
     JSONSyntaxHighlight: function (json) {
         if (typeof json != 'string') {
             json = JSON.stringify(json, undefined, 2);

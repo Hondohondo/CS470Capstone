@@ -75,7 +75,7 @@
     </div>
 
     <!-- Formatted Message modal -->
-    <div class="modal fade modal-lg" id="modal-pretty-json" role="dialog" tabindex="-1">
+    <div class="modal fade" id="modal-pretty-json" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -83,7 +83,24 @@
                     <h4 class="modal-title">Formatted Message</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="input-json-search">Keyword</label>
+                        <input id="input-json-search" class="form-control json-search" type="text" placeholder="Enter search term" />
+                        <small id="no-search-value" class="form-text text-muted hidden">Please enter a search term</small>
+                        <br />
+                        <label for="input-json-char-limit">Char limit</label>
+                        <input id="input-json-char-limit" class="form-control json-search" type="number" max="200" placeholder="100" />
+                        <small id="no-char-value" class="form-text text-muted hidden">Please enter a character limit</small>
+                        <br /><br />
+                        <button id="button-search-json" class="btn btn-primary">Search JSON data &nbsp; <span class="fa fa-search"></span></button>
+                    </div>
+                    <div id="json-search-result">
+                        <textarea id="input-json-search-result" type="text" class="form-control" placeholder="result" readonly></textarea>
+                        <button id="copy-json-result" class="btn btn-primary"><span class="fa fa-clipboard"></span></button>
+                    </div>
+                    <br />
                     <div id="pretty-json" class="well"></div>
+                    <button id="copy-json" class="btn btn-primary"><span class="fa fa-clipboard"></span></button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
