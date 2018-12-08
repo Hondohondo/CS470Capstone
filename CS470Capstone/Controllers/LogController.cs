@@ -37,7 +37,7 @@ namespace CCFLoggingConfig.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetLogForDataTable()
+        public JsonResult GetLogForDataTable(string application,string searchTerm)
         {
             try
             {
@@ -69,6 +69,19 @@ namespace CCFLoggingConfig.Controllers
                         query = query.OrderBy(sortColumn + " " + sortDirection);
                     }
 
+                    //filtering
+                    if (!String.IsNullOrWhiteSpace(application))
+                    {
+                        query = query.Where(l => l.Title == application.Trim());
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(searchTerm))
+                    {
+                        query = query.Where(l => l.Message.Contains(searchTerm) ||
+                            l.Title.Contains(searchTerm) ||
+                            l.AuthenticatedUser.Contains(searchTerm));
+                    }
+
                     //total number of rows count     
                     recordsTotal = query.Count();
                     //Paging     
@@ -84,6 +97,22 @@ namespace CCFLoggingConfig.Controllers
                 }
             }
             catch(Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+        public JsonResult GetApplications() {
+            try
+            {
+                using (var db = new logconfigEntities())
+                {
+                    var applications = db.Logs.Select(l => l.Title).Distinct().ToList();
+
+                    return Json(applications);
+                }
+            }
+            catch (Exception ex)
             {
                 return Json(ex.Message);
             }
@@ -199,113 +228,113 @@ namespace CCFLoggingConfig.Controllers
         //    }
         //}
 
-            //public JsonResult CreateLog()
-            //{
-            //    using (var db = new logconfigEntities1()) {
-            //        Log a = new Log
-            //        {
-            //            LogID = 309695,
-            //            EventID = 2,
-            //            Priority = 1,
-            //            Severity = "Information",
-            //            Title = "RadPeerReview - Audit",
-            //            Timestamp = DateTime.Now,
-            //            MachineName = "CC-CLWEB52",
-            //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
-            //            ProcessID = "4860",
-            //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
-            //            ThreadName = "NULL",
-            //            Win32ThreadId = "8612",
-            //            AuthenticatedUser = "larricr1",
-            //            Message = "User Login",
-            //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
-            //            EntityKey = "NULL"
-            //        };
-            //        db.Logs.Add(a);
-            //        Log b = new Log
-            //        {
-            //            LogID = 309696,
-            //            EventID = 3,
-            //            Priority = 1,
-            //            Severity = "Information",
-            //            Title = "RadPeerReview - Audit",
-            //            Timestamp = DateTime.Now,
-            //            MachineName = "CC-CLWEB52",
-            //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
-            //            ProcessID = "4860",
-            //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
-            //            ThreadName = "NULL",
-            //            Win32ThreadId = "19036",
-            //            AuthenticatedUser = "larricr1",
-            //            Message = "Peer Review Auto Assigmnent",
-            //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
-            //            EntityKey = "NULL"
-            //        };
-            //        db.Logs.Add(b);
-            //        Log c = new Log
-            //        {
-            //            LogID = 309697,
-            //            EventID = 4,
-            //            Priority = 1,
-            //            Severity = "Information",
-            //            Title = "PS360Parsing_MRMS - SystemAction",
-            //            Timestamp = DateTime.Now,
-            //            MachineName = "CC-RADETL02",
-            //            AppDomainName = "PS360Parsing_MRMS.exe",
-            //            ProcessID = "12448",
-            //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
-            //            ThreadName = "NULL",
-            //            Win32ThreadId = "8300",
-            //            AuthenticatedUser = "NULL",
-            //            Message = "Processing Completed",
-            //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
-            //            EntityKey = "NULL"
-            //        };
-            //        db.Logs.Add(c);
-            //        Log d = new Log
-            //        {
-            //            LogID = 309698,
-            //            EventID = 3,
-            //            Priority = 1,
-            //            Severity = "Information",
-            //            Title = "RadPeerReview - UserAction",
-            //            Timestamp = DateTime.Now,
-            //            MachineName = "CC-CLWEB52",
-            //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
-            //            ProcessID = "4860",
-            //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
-            //            ThreadName = "NULL",
-            //            Win32ThreadId = "18652",
-            //            AuthenticatedUser = "larricr1",
-            //            Message = "Peer Review Submission",
-            //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
-            //            EntityKey = "NULL"
-            //        };
-            //        db.Logs.Add(d);
-            //        Log e = new Log
-            //        {
-            //            LogID = 309699,
-            //            EventID = 2,
-            //            Priority = 1,
-            //            Severity = "Information",
-            //            Title = "Encore - Audit",
-            //            Timestamp = DateTime.Now,
-            //            MachineName = "CC-CLWEB52",
-            //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
-            //            ProcessID = "4860",
-            //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
-            //            ThreadName = "NULL",
-            //            Win32ThreadId = "18652",
-            //            AuthenticatedUser = "poturam",
-            //            Message = "Logon",
-            //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
-            //            EntityKey = "NULL"
-            //        };
-            //        db.Logs.Add(e);
+        //public JsonResult CreateLog()
+        //{
+        //    using (var db = new logconfigEntities1()) {
+        //        Log a = new Log
+        //        {
+        //            LogID = 309695,
+        //            EventID = 2,
+        //            Priority = 1,
+        //            Severity = "Information",
+        //            Title = "RadPeerReview - Audit",
+        //            Timestamp = DateTime.Now,
+        //            MachineName = "CC-CLWEB52",
+        //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
+        //            ProcessID = "4860",
+        //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
+        //            ThreadName = "NULL",
+        //            Win32ThreadId = "8612",
+        //            AuthenticatedUser = "larricr1",
+        //            Message = "User Login",
+        //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
+        //            EntityKey = "NULL"
+        //        };
+        //        db.Logs.Add(a);
+        //        Log b = new Log
+        //        {
+        //            LogID = 309696,
+        //            EventID = 3,
+        //            Priority = 1,
+        //            Severity = "Information",
+        //            Title = "RadPeerReview - Audit",
+        //            Timestamp = DateTime.Now,
+        //            MachineName = "CC-CLWEB52",
+        //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
+        //            ProcessID = "4860",
+        //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
+        //            ThreadName = "NULL",
+        //            Win32ThreadId = "19036",
+        //            AuthenticatedUser = "larricr1",
+        //            Message = "Peer Review Auto Assigmnent",
+        //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
+        //            EntityKey = "NULL"
+        //        };
+        //        db.Logs.Add(b);
+        //        Log c = new Log
+        //        {
+        //            LogID = 309697,
+        //            EventID = 4,
+        //            Priority = 1,
+        //            Severity = "Information",
+        //            Title = "PS360Parsing_MRMS - SystemAction",
+        //            Timestamp = DateTime.Now,
+        //            MachineName = "CC-RADETL02",
+        //            AppDomainName = "PS360Parsing_MRMS.exe",
+        //            ProcessID = "12448",
+        //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
+        //            ThreadName = "NULL",
+        //            Win32ThreadId = "8300",
+        //            AuthenticatedUser = "NULL",
+        //            Message = "Processing Completed",
+        //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
+        //            EntityKey = "NULL"
+        //        };
+        //        db.Logs.Add(c);
+        //        Log d = new Log
+        //        {
+        //            LogID = 309698,
+        //            EventID = 3,
+        //            Priority = 1,
+        //            Severity = "Information",
+        //            Title = "RadPeerReview - UserAction",
+        //            Timestamp = DateTime.Now,
+        //            MachineName = "CC-CLWEB52",
+        //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
+        //            ProcessID = "4860",
+        //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
+        //            ThreadName = "NULL",
+        //            Win32ThreadId = "18652",
+        //            AuthenticatedUser = "larricr1",
+        //            Message = "Peer Review Submission",
+        //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
+        //            EntityKey = "NULL"
+        //        };
+        //        db.Logs.Add(d);
+        //        Log e = new Log
+        //        {
+        //            LogID = 309699,
+        //            EventID = 2,
+        //            Priority = 1,
+        //            Severity = "Information",
+        //            Title = "Encore - Audit",
+        //            Timestamp = DateTime.Now,
+        //            MachineName = "CC-CLWEB52",
+        //            AppDomainName = "/LM/W3SVC/27/ROOT/imaging/radpeerreview-30-131775097541452917",
+        //            ProcessID = "4860",
+        //            ProcessName = "c:\\windows\\system32\\inetsrv\\w3wp.exe",
+        //            ThreadName = "NULL",
+        //            Win32ThreadId = "18652",
+        //            AuthenticatedUser = "poturam",
+        //            Message = "Logon",
+        //            FormattedMessage = "{\"AuthenticatedUser\":\"larricr1\",\"EntityKey\":null,\"Message\":\"User Login\",\"Categories\":[\"RadPeerReview\"],\"Priority\":1,\"EventId\":2,\"Severity\":8,\"LoggedSeverity\":\"Information\",\"Title\":\"RadPeerReview - Audit\",\"TimeStamp\":\"2018 - 08 - 01T01:29:00.4309166Z\",\"MachineName\":\"CC - CLWEB52\",\"AppDomainName\":\" / LM / W3SVC / 27 / ROOT / imaging / radpeerreview - 30 - 131775097541452917\",\"ProcessId\":\"4860\",\"ProcessName\":\"c:\\windows\\system32\\inetsrv\\w3wp.exe\",\"ManagedThreadName\":null,\"Win32ThreadId\":\"8612\",\"ExtendedProperties\":{\"ImpersonationName\":\"Larrick, Randy\",\"URL\":\"http://iweb4.ccf.org/imaging/radpeerreview/Login/LoginEmployee.aspx\",\"HTTPMethod\":\"POST\",\"IsAuthenticated\":false,\"UserAgent\":\"Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko\"},\"TimeStampString\":\"8/1/2018 1:29:00 AM\",\"ActivityId\":\"00000000-0000-0000-0000-000000000000\",\"RelatedActivityId\":null,\"ErrorMessages\":null,\"ActivityIdString\":\"00000000-0000-0000-0000-000000000000\",\"CategoriesStrings\":[\"RadPeerReview\"]}",
+        //            EntityKey = "NULL"
+        //        };
+        //        db.Logs.Add(e);
 
-            //        db.SaveChanges();
-            //    }
-            //        return Json(true);
-            //}
+        //        db.SaveChanges();
+        //    }
+        //        return Json(true);
+        //}
     }
 }

@@ -1,10 +1,6 @@
 ﻿var log = {
     Initialize: function () {
 
-        //initialize the logs data table
-        log.InitializeLogsDataTable();
-
-
         /*
             Modal event handlers
         */
@@ -80,6 +76,31 @@
                 charLimit ? $("#no-char-value").addClass("hidden") : $("#no-char-value").removeClass("hidden");
             }
         });
+
+        $(document).on("click", "#button-clear-search", function () {
+            $("#input-log-search").val('');
+            $("#select-application").val('');
+            $("#table-log").DataTable().ajax.reload();
+        });
+
+        /*
+            search filtering event handlers
+        */
+
+        $(document).on("keyup", "#input-log-search", function () {
+            $("#table-log").DataTable().ajax.reload();
+        });
+
+        $(document).on("change", '#select-application', function () {
+            $("#table-log").DataTable().ajax.reload();
+        });
+
+        /*
+            function calls
+        */
+        
+        log.InitializeLogsDataTable();
+        log.InitializeApplicationDropdown();
     },
 
     PopulatePrettyJson: function (logID) {
@@ -96,6 +117,11 @@
 
     InitializeApplicationDropdown: function () {
         //select distinct applications from table
+        logAPI.InitializeApplicationDropdown(function (response) {
+            $.each(response, function (index,value) {
+                $("#select-application").append('<option value="' + value + '">' + value + '</option>');
+            });
+        });
     },
 
     InitializeLogsDataTable: function () {
@@ -105,6 +131,10 @@
                 url: "../Log/GetLogForDataTable",
                 type: "POST",
                 datatype: "json",
+                data: function (d) {
+                    d.application = $('#select-application').val(),
+                    d.searchTerm = $("#input-log-search").val()
+                },
             },
             rowId: "LogID",
             serverSide: true,
@@ -112,6 +142,7 @@
             pageLength: 10,
             lengthChange: false,
             order: [0, "asc"],
+            processing: true,
             columns: [
                 { data: "Title", sortable: true, searchable: true, name: "Title" },
                 { data: "Severity", sortable: true, searchable: false, name: "Severity" },
