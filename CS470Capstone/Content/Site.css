@@ -123,3 +123,7 @@ textarea {
 #newConfigurationValue{
     width: 100%;
 }
+
+.search-warning{
+    color: red;
+}

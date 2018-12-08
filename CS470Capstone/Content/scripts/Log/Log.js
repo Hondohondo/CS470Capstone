@@ -1,37 +1,21 @@
 ﻿var log = {
     Initialize: function () {
 
+        //initialize the logs data table
         log.InitializeLogsDataTable();
 
-        $(document).on("click", "#button-view-full-log", function () {
-            log.GetLog($(this).attr("data-log-id"));
-        });
 
-        $(document).on("click", "#button-view-pretty-json", function () {
-            var logID = $(this).attr("data-log-id");
-            $("#modal-pretty-json .modal-title").text("Formatted Message for Log " + logID);
-            $("#modal-pretty-json").modal("show");
-        });
-
-        //use value stored in hidden field to avoid additional ajax call
-        $(document).on("click", "#button-view-pretty-json-from-table", function () {
-            var logID = $(this).attr("data-log-id");
-            var encoded = $("#pretty-json-log-id-" + logID).val();
-            var decoded = decodeURIComponent(encoded); //decode encoded formatted message from hidden field
-            var noBackslashes = decoded.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
-            var parsed = JSON.parse(noBackslashes);
-            var syntax = log.JSONSyntaxHighlight(parsed);
-            $("#pretty-json").append(syntax);
-            
-            $("#modal-pretty-json .modal-title").text("Formatted Message for Log " + logID);
-            $("#modal-pretty-json").modal("show");
-        });
-
-        //want these to act independantly of each other
+        /*
+            Modal event handlers
+        */
         $(document).on("hidden.bs.modal", "#modal-pretty-json", function () {
             $("#modal-pretty-json .modal-title").text('Formatted Message');
             $("#pretty-json").empty();
-            $("#input-json-search-result").empty(); //THIS ISNT WORKING
+            $("#input-json-search-result").val('');
+            $("#input-json-search").val('');
+            $("#input-json-char-limit").val('');
+            $("#json-search-result").addClass('hidden');
+            $("#full-pretty-json").val('');
         });
 
         $(document).on("hidden.bs.modal", "#modal-log-details", function () {
@@ -39,47 +23,57 @@
             $("#pretty-json").empty();
         });
 
-        //copy json content event handler
-        $(document).on("click", "#copy-json", function () {
-            var $temp = $('<input type="text">');
-            $("body").append($temp);
-            $temp.val($("#pretty-json").text()).select();
-            document.execCommand("copy");
-            $temp.remove();
+        /*
+            Button event handlers
+        */
+        $(document).on("click", "#button-view-full-log", function () {
+            log.GetLog($(this).attr("data-log-id"));
         });
 
-        //copy json search result content event handler
+        
+        $(document).on("click", "#button-view-pretty-json", function () {
+            log.PopulatePrettyJson($(this).attr("data-log-id"));
+        });
+
+        $(document).on("click", "#button-view-pretty-json-from-table", function () {
+            log.PopulatePrettyJson($(this).attr("data-log-id"));
+        });
+
+        $(document).on("click", "#copy-json", function () {
+            $("#pretty-json").select();
+            document.execCommand('copy');
+        });
+
         $(document).on("click", "#copy-json-result", function () {
-            //TODO get this to work. works for some reason in the stackoverflow example but not here. same browser
-            //https://stackoverflow.com/questions/22581345/click-button-copy-to-clipboard-using-jquery
+            $("#input-json-search-result").select();
+            document.execCommand('copy');
         });
 
         $(document).on("click", "#button-search-json", function () {
-            // if there are no values we dont want to do the search so make sure there are values first
             var search = $("#input-json-search").val();
-            var charLimit = $("#input-json-char-limit").val();
-            console.log(search);
-            console.log(charLimit);
+            var charLimit = parseInt($("#input-json-char-limit").val());
 
             if (search && charLimit) {
-                console.log("both have values");
                 $("#no-search-value").addClass("hidden");
                 $("#no-char-value").addClass("hidden");
-
-                var json = $("#pretty-json").text();
+                $("#no-result").addClass('hidden');
+                var json = $("#pretty-json").val();
                 var start = json.indexOf(search);
+                var end = start + charLimit;
                 var result = "";
-                if(start != -1){
-                    if (start + charLimit < json.length) {
-                        result = json.substring(start, start + charLimit);
+                if (start != -1) {
+                    if (end < json.length) {
+                        result = json.substring(start, end);
                     }
                     else {
                         result = json.substring(start);
                     }
                     $("#input-json-search-result").val(result);
+                    $("#json-search-result").removeClass('hidden');
                 }
-                
-                console.log(result);
+                else {
+                    $("#no-result").removeClass('hidden');
+                }
             }
             else {
                 search ? $("#no-search-value").addClass("hidden") : $("#no-search-value").removeClass("hidden");
@@ -88,10 +82,16 @@
         });
     },
 
-    ResetLogModals: function () {
-        $("#modal-pretty-json .modal-title").text('Formatted Message');
-        $("#table-log-details > tbody:last-child").empty();
-        $("#pretty-json").empty();
+    PopulatePrettyJson: function (logID) {
+        var encoded = $("#pretty-json-log-id-" + logID).val();
+        var decoded = decodeURIComponent(encoded); //decode encoded formatted message from hidden field
+        var noBackslashes = decoded.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
+        var parsed = JSON.parse(noBackslashes);
+        var string = JSON.stringify(parsed, null, "\t");
+        $("#pretty-json").val(string);
+
+        $("#modal-pretty-json .modal-title").text("Formatted Message for Log " + logID);
+        $("#modal-pretty-json").modal("show");
     },
 
     InitializeApplicationDropdown: function () {
@@ -124,10 +124,15 @@
                     targets: 5,
                     visible: true,
                     render: function (data, type, row) {
-                        var encoded = encodeURIComponent(row.FormattedMessage); //encode json data to store in hidden field
-                        return '<button class="btn btn-sm btn-primary" id="button-view-full-log" data-log-id="' + row.LogID + '"><span class="fa fa-edit"><span></button> &nbsp;' +
-                            '<button class="btn btn-sm btn-primary" id="button-view-pretty-json-from-table" data-log-id="' + row.LogID + '"><span class="fa fa-share"><span></button>' +
-                            '<input id="pretty-json-log-id-' + row.LogID + '"type="text" value="' + encoded + '" hidden>';
+                        if (row.FormattedMessage) {
+                            var encoded = encodeURIComponent(row.FormattedMessage); //encode json data to store in hidden field
+                            return '<button class="btn btn-sm btn-primary" id="button-view-full-log" data-log-id="' + row.LogID + '"><span class="fa fa-edit"><span></button> &nbsp;' +
+                                '<button class="btn btn-sm btn-primary" id="button-view-pretty-json-from-table" data-log-id="' + row.LogID + '"><span class="fa fa-share"><span></button>' +
+                                '<input id="pretty-json-log-id-' + row.LogID + '"type="text" value="' + encoded + '" hidden>';
+                        }
+                        else {
+                            return '<button class="btn btn-sm btn-primary" id="button-view-full-log" data-log-id="' + row.LogID + '"><span class="fa fa-edit"><span></button>';
+                        }
                     }
                 },
             ]
@@ -138,7 +143,6 @@
 
         $("#loading-log-details").removeClass("hidden");
         $("#modal-log-details").modal("show");
-        log.ResetLogModals();
 
         logAPI.GetLog(logID, function (response) {
             if (response) {
@@ -162,14 +166,9 @@
                 var AuthenticatedUser = "<tr><td><b> WinAuthenticatedUser32ThreadId: </b></td><td>" + response.AuthenticatedUser + "</td></tr>";
                 var Message = "<tr><td><b> Message: </b></td><td>" + response.Message + "</td></tr>";
 
-                var formattedMessage = "";
-                //formatted message parsing and syntax highlighting
+                var FormattedMessage = "";
                 if(response.FormattedMessage){
                     FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td><button id="button-view-pretty-json" class="btn btn-sm btn-primary" data-log-id="' + response.LogID + '"><span class="fa fa-share"></span></button>&nbsp;</td></tr>';
-                    var noBackslashes = response.FormattedMessage.replace(/\\/g, "/"); //JSON.parse has a problem with backslashes so we need to replace them with forward slashes
-                    var parsed = JSON.parse(noBackslashes);
-                    var syntax = log.JSONSyntaxHighlight(parsed);
-                    $("#pretty-json").append(syntax);
                 }
                 else{
                     FormattedMessage = '<tr><td><b> FormattedMessage: </b></td><td>NULL</td></tr>';
@@ -186,30 +185,7 @@
                 console.log(response);
             }
         });
-    },
-
-    //function borrowed from https://stackoverflow.com/a/7220510
-    JSONSyntaxHighlight: function (json) {
-        if (typeof json != 'string') {
-            json = JSON.stringify(json, undefined, 2);
-        }
-        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'number';
-            if (/^"/.test(match)) {
-                if (/:$/.test(match)) {
-                    cls = 'key';
-                } else {
-                    cls = 'string';
-                }
-            } else if (/true|false/.test(match)) {
-                cls = 'boolean';
-            } else if (/null/.test(match)) {
-                cls = 'null';
-            }
-            return '<span class="' + cls + '">' + match + '</span>';
-        });
-    },
+    }
 }
 
 $(document).ready(log.Initialize());

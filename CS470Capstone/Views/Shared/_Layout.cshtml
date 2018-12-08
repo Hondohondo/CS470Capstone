@@ -83,24 +83,46 @@
                     <h4 class="modal-title">Formatted Message</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="input-json-search">Keyword</label>
-                        <input id="input-json-search" class="form-control json-search" type="text" placeholder="Enter search term" />
-                        <small id="no-search-value" class="form-text text-muted hidden">Please enter a search term</small>
-                        <br />
-                        <label for="input-json-char-limit">Char limit</label>
-                        <input id="input-json-char-limit" class="form-control json-search" type="number" max="200" placeholder="100" />
-                        <small id="no-char-value" class="form-text text-muted hidden">Please enter a character limit</small>
-                        <br /><br />
-                        <button id="button-search-json" class="btn btn-primary">Search JSON data &nbsp; <span class="fa fa-search"></span></button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="input-json-search">Keyword</label>
+                            <input id="input-json-search" class="form-control json-search" type="text" placeholder="Enter search term" style="width:100%" />
+                            <small id="no-search-value" class="form-text text-muted hidden search-warning">Please enter a search term</small>
+                            <br />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="input-json-char-limit">Char limit</label>
+                            <input id="input-json-char-limit" class="form-control json-search" type="number" min="0" placeholder="200" />
+                            <small id="no-char-value" class="form-text text-muted hidden search-warning">Please enter a character limit</small>
+                        </div>
                     </div>
-                    <div id="json-search-result">
-                        <textarea id="input-json-search-result" type="text" class="form-control" placeholder="result" readonly></textarea>
-                        <button id="copy-json-result" class="btn btn-primary"><span class="fa fa-clipboard"></span></button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="button-search-json" class="btn btn-primary">Search JSON message &nbsp; <span class="fa fa-search"></span></button>
+                            <br />
+                            <small id="no-result" class="form-text text-muted hidden search-warning">No result based on search conditions</small>
+                        </div>
                     </div>
                     <br />
-                    <div id="pretty-json" class="well"></div>
-                    <button id="copy-json" class="btn btn-primary"><span class="fa fa-clipboard"></span></button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="json-search-result" class="hidden">
+                                <label for="input-json-search-result">Result</label>
+                                <textarea id="input-json-search-result" type="text" class="form-control" placeholder="result" readonly style="min-width: 100%"></textarea>
+                                <br />
+                                <button id="copy-json-result" class="btn btn-primary">Copy result text &nbsp; <span class="fa fa-clipboard"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="pretty-json">Full JSON message</label>
+                            <textarea id="pretty-json" type="text" class="form-control" placeholder="result" readonly style="min-width: 100%"></textarea>
+                            <br />
+                            <button id="copy-json" class="btn btn-primary">Copy full JSON message &nbsp; <span class="fa fa-clipboard"></span></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
