@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
+using CCFLoggingConfig.Models.Sysssislog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -16,7 +18,7 @@ namespace CCFLoggingConfig.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSysssislog(int ID)
+        public JsonResult GetSysssislog(int logID)
         {
             try
             {
@@ -24,8 +26,9 @@ namespace CCFLoggingConfig.Controllers
                 using (var db = new logconfigEntities())
                 {
                     
-                    var sysssislog = db.sysssislogs.Find(ID);
-                    return Json(sysssislog);
+                    var sysssislog = db.sysssislogs.Find(logID);
+                    var request = Mapper.Map<SysssislogViewModel>(sysssislog);
+                    return Json(request);
                 }
             }
             catch (Exception ex)

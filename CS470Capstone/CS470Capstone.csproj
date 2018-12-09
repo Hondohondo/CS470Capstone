@@ -187,6 +187,7 @@
     </Compile>
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Models\Log\LogViewModel.cs" />
+    <Compile Include="Models\Sysssislog\SysssislogViewModel.cs" />
     <Compile Include="quickConfiguration.cs">
       <DependentUpon>LogConfigContext.tt</DependentUpon>
     </Compile>

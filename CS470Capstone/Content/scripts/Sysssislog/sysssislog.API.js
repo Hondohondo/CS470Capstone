@@ -1,13 +1,13 @@
-﻿var syssislogAPI = {
+﻿var sysssislogAPI = {
 
-    GetSysssislog: function (ID, callback) {
+    GetSysssislog: function (logID, callback) {
         $.ajax({
             type: "POST",
             url: "../Sysssislog/GetSysssislog",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify({
-                ID: ID
+                logID: logID
             }),
             success: function (data) {
                 typeof callback === "function" && callback(data);
