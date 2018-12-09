@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="logconfigModelStoreContainer" CdmEntityContainer="logconfigEntities1">
+  <EntityContainerMapping StorageEntityContainer="logconfigModelStoreContainer" CdmEntityContainer="logconfigEntities">
     <EntitySetMapping Name="Configurations">
       <EntityTypeMapping TypeName="logconfigModel.Configuration">
         <MappingFragment StoreEntitySet="Configuration">
@@ -33,6 +33,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="SSIS_Configurations">
+      <EntityTypeMapping TypeName="logconfigModel.SSIS_Configurations">
+        <MappingFragment StoreEntitySet="SSIS_Configurations">
+          <ScalarProperty Name="ConfigurationFilter" ColumnName="ConfigurationFilter" />
+          <ScalarProperty Name="ConfiguredValue" ColumnName="ConfiguredValue" />
+          <ScalarProperty Name="PackagePath" ColumnName="PackagePath" />
+          <ScalarProperty Name="ConfiguredValueType" ColumnName="ConfiguredValueType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="sysssislogs">
       <EntityTypeMapping TypeName="logconfigModel.sysssislog">
         <MappingFragment StoreEntitySet="sysssislog">
@@ -48,16 +58,6 @@
           <ScalarProperty Name="datacode" ColumnName="datacode" />
           <ScalarProperty Name="databytes" ColumnName="databytes" />
           <ScalarProperty Name="message" ColumnName="message" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="SSIS_Configurations">
-      <EntityTypeMapping TypeName="logconfigModel.SSIS_Configuration">
-        <MappingFragment StoreEntitySet="SSIS Configurations">
-          <ScalarProperty Name="ConfigurationFilter" ColumnName="ConfigurationFilter" />
-          <ScalarProperty Name="ConfiguredValue" ColumnName="ConfiguredValue" />
-          <ScalarProperty Name="PackagePath" ColumnName="PackagePath" />
-          <ScalarProperty Name="ConfiguredValueType" ColumnName="ConfiguredValueType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

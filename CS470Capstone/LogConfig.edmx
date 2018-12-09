@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="logconfigModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="logconfigModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Configuration">
           <Key>
             <PropertyRef Name="Application" />
@@ -36,25 +36,13 @@
           <Property Name="FormattedMessage" Type="nvarchar(max)" />
           <Property Name="EntityKey" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="quickConfiguration">
-          <Key>
-            <PropertyRef Name="Application" />
-            <PropertyRef Name="Key" />
-          </Key>
-          <Property Name="Application" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Value" Type="nvarchar(max)" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="SSIS Configurations">
+        <EntityType Name="SSIS_Configurations">
           <Key>
             <PropertyRef Name="ConfigurationFilter" />
-            <PropertyRef Name="PackagePath" />
-            <PropertyRef Name="ConfiguredValueType" />
+            <PropertyRef Name="ConfiguredValue" />
           </Key>
           <Property Name="ConfigurationFilter" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="ConfiguredValue" Type="nvarchar" MaxLength="255" />
+          <Property Name="ConfiguredValue" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="PackagePath" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="ConfiguredValueType" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
@@ -75,39 +63,14 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
           <Property Name="databytes" Type="image" />
           <Property Name="message" Type="nvarchar" MaxLength="2048" Nullable="false" />
         </EntityType>
-        <Association Name="FK__quickConfigurati__05D8E0BE">
-          <End Role="Configuration" Type="Self.Configuration" Multiplicity="1" />
-          <End Role="quickConfiguration" Type="Self.quickConfiguration" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Configuration">
-              <PropertyRef Name="Application" />
-              <PropertyRef Name="Key" />
-            </Principal>
-            <Dependent Role="quickConfiguration">
-              <PropertyRef Name="Application" />
-              <PropertyRef Name="Key" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="logconfigModelStoreContainer">
           <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="quickConfiguration" EntityType="Self.quickConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configurations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysssislog" EntityType="Self.sysssislog" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SSIS Configurations" EntityType="Self.SSIS Configurations" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [SSIS Configurations].[ConfigurationFilter] AS [ConfigurationFilter], 
-    [SSIS Configurations].[ConfiguredValue] AS [ConfiguredValue], 
-    [SSIS Configurations].[PackagePath] AS [PackagePath], 
-    [SSIS Configurations].[ConfiguredValueType] AS [ConfiguredValueType]
-    FROM [dbo].[SSIS Configurations] AS [SSIS Configurations]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__quickConfigurati__05D8E0BE" Association="Self.FK__quickConfigurati__05D8E0BE">
-            <End Role="Configuration" EntitySet="Configuration" />
-            <End Role="quickConfiguration" EntitySet="quickConfiguration" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="logconfigModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -119,7 +82,6 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
           <Property Name="Application" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="quickConfiguration" Relationship="logconfigModel.FK__quickConfigurati__05D8E0BE" FromRole="Configuration" ToRole="quickConfiguration" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -143,6 +105,16 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
           <Property Name="FormattedMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EntityKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="SSIS_Configurations">
+          <Key>
+            <PropertyRef Name="ConfigurationFilter" />
+            <PropertyRef Name="ConfiguredValue" />
+          </Key>
+          <Property Name="ConfigurationFilter" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConfiguredValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PackagePath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConfiguredValueType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
         <EntityType Name="sysssislog">
           <Key>
             <PropertyRef Name="id" />
@@ -160,52 +132,12 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
           <Property Name="databytes" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="message" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityType Name="SSIS_Configuration">
-          <Key>
-            <PropertyRef Name="ConfigurationFilter" />
-            <PropertyRef Name="PackagePath" />
-            <PropertyRef Name="ConfiguredValueType" />
-          </Key>
-          <Property Name="ConfigurationFilter" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ConfiguredValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PackagePath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ConfiguredValueType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="logconfigEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Configurations" EntityType="Self.Configuration" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
+          <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configurations" />
           <EntitySet Name="sysssislogs" EntityType="Self.sysssislog" />
-          <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configuration" />
-          <EntitySet Name="quickConfigurations" EntityType="logconfigModel.quickConfiguration" />
-          <AssociationSet Name="FK__quickConfigurati__05D8E0BE" Association="logconfigModel.FK__quickConfigurati__05D8E0BE">
-            <End Role="Configuration" EntitySet="Configurations" />
-            <End Role="quickConfiguration" EntitySet="quickConfigurations" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="quickConfiguration">
-          <Key>
-            <PropertyRef Name="Application" />
-            <PropertyRef Name="Key" />
-          </Key>
-          <Property Name="Application" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Configuration" Relationship="logconfigModel.FK__quickConfigurati__05D8E0BE" FromRole="quickConfiguration" ToRole="Configuration" />
-        </EntityType>
-        <Association Name="FK__quickConfigurati__05D8E0BE">
-          <End Type="logconfigModel.Configuration" Role="Configuration" Multiplicity="1" />
-          <End Type="logconfigModel.quickConfiguration" Role="quickConfiguration" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Configuration">
-              <PropertyRef Name="Application" />
-              <PropertyRef Name="Key" />
-            </Principal>
-            <Dependent Role="quickConfiguration">
-              <PropertyRef Name="Application" />
-              <PropertyRef Name="Key" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -244,6 +176,16 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SSIS_Configurations">
+            <EntityTypeMapping TypeName="logconfigModel.SSIS_Configurations">
+              <MappingFragment StoreEntitySet="SSIS_Configurations">
+                <ScalarProperty Name="ConfigurationFilter" ColumnName="ConfigurationFilter" />
+                <ScalarProperty Name="ConfiguredValue" ColumnName="ConfiguredValue" />
+                <ScalarProperty Name="PackagePath" ColumnName="PackagePath" />
+                <ScalarProperty Name="ConfiguredValueType" ColumnName="ConfiguredValueType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="sysssislogs">
             <EntityTypeMapping TypeName="logconfigModel.sysssislog">
               <MappingFragment StoreEntitySet="sysssislog">
@@ -259,25 +201,6 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
                 <ScalarProperty Name="datacode" ColumnName="datacode" />
                 <ScalarProperty Name="databytes" ColumnName="databytes" />
                 <ScalarProperty Name="message" ColumnName="message" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SSIS_Configurations">
-            <EntityTypeMapping TypeName="logconfigModel.SSIS_Configuration">
-              <MappingFragment StoreEntitySet="SSIS Configurations">
-                <ScalarProperty Name="ConfigurationFilter" ColumnName="ConfigurationFilter" />
-                <ScalarProperty Name="ConfiguredValue" ColumnName="ConfiguredValue" />
-                <ScalarProperty Name="PackagePath" ColumnName="PackagePath" />
-                <ScalarProperty Name="ConfiguredValueType" ColumnName="ConfiguredValueType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="quickConfigurations">
-            <EntityTypeMapping TypeName="logconfigModel.quickConfiguration">
-              <MappingFragment StoreEntitySet="quickConfiguration">
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Key" ColumnName="Key" />
-                <ScalarProperty Name="Application" ColumnName="Application" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

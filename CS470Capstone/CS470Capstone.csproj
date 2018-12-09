@@ -160,47 +160,44 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Configuration.cs">
-      <DependentUpon>LogConfigContext.tt</DependentUpon>
+      <DependentUpon>LogConfig.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SSIS_ConfigurationController.cs" />
     <Compile Include="Controllers\SysssislogController.cs" />
-    <Compile Include="Log.cs">
-      <DependentUpon>LogConfigContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LogConfigContext.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LogConfigContext.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LogConfigContext.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LogConfigContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LogConfigContext.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LogConfigContext.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Log.cs">
+      <DependentUpon>LogConfig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LogConfig.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LogConfig.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LogConfig.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LogConfig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LogConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LogConfig.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Log\LogViewModel.cs" />
     <Compile Include="Models\Sysssislog\SysssislogViewModel.cs" />
-    <Compile Include="quickConfiguration.cs">
-      <DependentUpon>LogConfigContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SSIS_Configuration.cs">
-      <DependentUpon>LogConfigContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysssislog.cs">
-      <DependentUpon>LogConfigContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SSIS_Configurations.cs">
+      <DependentUpon>LogConfig.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysssislog.cs">
+      <DependentUpon>LogConfig.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -1607,30 +1604,23 @@
     <Content Include="Content\scripts\SSIS_Configuration\SSIS_Configuration.js" />
     <Content Include="Content\scripts\Sysssislog\sysssislog.API.js" />
     <Content Include="Content\scripts\Sysssislog\sysssislog.js" />
-    <Content Include="LogConfigContext.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LogConfigContext.edmx</DependentUpon>
-      <LastGenOutput>LogConfigContext.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="LogConfigContext.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LogConfigContext.edmx</DependentUpon>
-      <LastGenOutput>LogConfigContext.cs</LastGenOutput>
-    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="LogConfig.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>LogConfig.edmx</DependentUpon>
+      <LastGenOutput>LogConfig.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="LogConfig.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>LogConfig.edmx</DependentUpon>
+      <LastGenOutput>LogConfig.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="LogConfigContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>LogConfigContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="LogConfigContext.edmx.diagram">
-      <DependentUpon>LogConfigContext.edmx</DependentUpon>
     </Content>
     <Content Include="Content\css\fa\less\brands.less" />
     <Content Include="Content\css\fa\less\fontawesome.less" />
@@ -1686,6 +1676,13 @@
     <Content Include="Content\css\fa\webfonts\fa-solid-900.ttf" />
     <Content Include="Content\css\fa\webfonts\fa-solid-900.woff" />
     <Content Include="Content\css\fa\webfonts\fa-solid-900.woff2" />
+    <EntityDeploy Include="LogConfig.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>LogConfig.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="LogConfig.edmx.diagram">
+      <DependentUpon>LogConfig.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
     <Content Include="Scripts\dataTables.bootstrap.min.js" />

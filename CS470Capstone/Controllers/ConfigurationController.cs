@@ -39,7 +39,7 @@ namespace CCFLoggingConfig.Controllers
 
                 using (var db = new logconfigEntities())
                 {
-                    IQueryable<Configuration> query = db.Configurations.Include(c => c.quickConfiguration);
+                    IQueryable<Configuration> query = db.Configurations;
 
                     //Sorting    
                     if (sortDirection.ToLowerInvariant() == "asc")
@@ -108,31 +108,6 @@ namespace CCFLoggingConfig.Controllers
             catch (Exception ex)
             {
                 return Json(ex.Message);
-            }
-
-        }
-
-        [HttpPost]
-        public JsonResult SetQuickConfiguration(String application, String key, String value)
-        {
-            try
-            {
-                using (var db = new logconfigEntities())
-                {
-                    quickConfiguration  newRecord = new quickConfiguration
-                    {
-                        Application = application,
-                        Key = key,
-                        Value = value
-                    };
-                    db.quickConfigurations.Add(newRecord);
-                    db.SaveChanges();
-                    return Json("true");
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json("false" + ex);
             }
 
         }

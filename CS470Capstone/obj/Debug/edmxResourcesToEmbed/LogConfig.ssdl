@@ -31,16 +31,13 @@
     <Property Name="FormattedMessage" Type="nvarchar(max)" />
     <Property Name="EntityKey" Type="nvarchar(max)" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="SSIS Configurations">
+  <EntityType Name="SSIS_Configurations">
     <Key>
       <PropertyRef Name="ConfigurationFilter" />
-      <PropertyRef Name="PackagePath" />
-      <PropertyRef Name="ConfiguredValueType" />
+      <PropertyRef Name="ConfiguredValue" />
     </Key>
     <Property Name="ConfigurationFilter" Type="nvarchar" MaxLength="255" Nullable="false" />
-    <Property Name="ConfiguredValue" Type="nvarchar" MaxLength="255" />
+    <Property Name="ConfiguredValue" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="PackagePath" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="ConfiguredValueType" Type="nvarchar" MaxLength="20" Nullable="false" />
   </EntityType>
@@ -64,14 +61,7 @@ warning 6002: The table/view 'logconfig.dbo.SSIS Configurations' does not have a
   <EntityContainer Name="logconfigModelStoreContainer">
     <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configurations" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysssislog" EntityType="Self.sysssislog" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="SSIS Configurations" EntityType="Self.SSIS Configurations" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [SSIS Configurations].[ConfigurationFilter] AS [ConfigurationFilter], 
-    [SSIS Configurations].[ConfiguredValue] AS [ConfiguredValue], 
-    [SSIS Configurations].[PackagePath] AS [PackagePath], 
-    [SSIS Configurations].[ConfiguredValueType] AS [ConfiguredValueType]
-    FROM [dbo].[SSIS Configurations] AS [SSIS Configurations]</DefiningQuery>
-    </EntitySet>
   </EntityContainer>
 </Schema>
