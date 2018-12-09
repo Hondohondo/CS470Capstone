@@ -39,15 +39,33 @@ namespace CCFLoggingConfig.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSysssislogForDataTable()
+        public JsonResult GetEvents()
+        {
+            try
+            {
+
+                using (var db = new logconfigEntities())
+                {
+
+                    var events = db.sysssislogs.Select(l => l.@event).Distinct().ToList();
+                    return Json(events);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult GetSysssislogForDataTable(string searchTerm, string @event)
         {
             try
             {
                 var draw = Request.Form.GetValues("draw").FirstOrDefault();
                 var start = Request.Form.GetValues("start").FirstOrDefault();
                 var length = Request.Form.GetValues("length").FirstOrDefault();
-
-                var searchValue = Request.Form["search[value]"].FirstOrDefault().ToString();
 
                 var sortDirection = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
                 var sortColumnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
@@ -73,14 +91,19 @@ namespace CCFLoggingConfig.Controllers
                         query = query.OrderBy(sortColumn + " " + sortDirection);
                     }
 
-                    // TODO:
-                    // fix this
 
-                    ////Search
-                    if (!string.IsNullOrEmpty(searchValue))
+                    //Filtering
+                    if (!String.IsNullOrEmpty(searchTerm))
                     {
-                        query = query.Where(l => l.computer.Contains(searchValue) ||
-                            l.@operator.Contains(searchValue)) ;
+                        query = query.Where(l => l.message.Contains(searchTerm) ||
+                            l.@operator.Contains(searchTerm) ||
+                            l.source.Contains(searchTerm) ||
+                            l.computer.Contains(searchTerm));
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(@event))
+                    {
+                        query = query.Where(l => l.@event == @event);
                     }
 
                     //total number of rows count     

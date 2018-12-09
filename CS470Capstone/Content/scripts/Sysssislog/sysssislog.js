@@ -1,6 +1,5 @@
 ﻿var sysssislog = {
     Initialize: function () {
-        sysssislog.InitializeSysssislogsDataTable();
 
         $(document).on("click", "#button-view-full-sysssislog", function () {
             sysssislog.GetSysssislog($(this).attr("data-log-id"));
@@ -10,6 +9,23 @@
         $(document).on("hidden.bs.modal", "#modal-sysssislog-details", function () {
             $("#table-sysssislog-details > tbody:last-child").empty();
         });
+
+        $(document).on("keyup", "#input-sysssislog-search", function () {
+            $("#table-sysssislog").DataTable().ajax.reload();
+        });
+
+        $(document).on("change", "#select-event", function () {
+            $("#table-sysssislog").DataTable().ajax.reload();
+        });
+
+        $(document).on("click", "#button-clear-search", function () {
+            $("#input-sysssislog-search").val('');
+            $("#select-event").val('');
+            $("#table-sysssislog").DataTable().ajax.reload();
+        });
+
+        sysssislog.InitializeSysssislogsDataTable();
+        sysssislog.InitializeEventsDropdown();
     },
 
     GetSysssislog: function (logID) {
@@ -43,12 +59,24 @@
         });
     },
 
+    InitializeEventsDropdown: function () {
+        sysssislogAPI.InitializeEventsDropdown(function (response) {
+            $.each(response, function (index, value) {
+                $("#select-event").append('<option value="' + value + '">' + value + '</option>');
+            });
+        });
+    },
+
     InitializeSysssislogsDataTable: function () {
         $("#table-sysssislog").dataTable({
             ajax: {
                 url: "../Sysssislog/GetSysssislogForDataTable",
                 type: "POST",
                 datatype: "json",
+                data: function (d) {
+                    d.searchTerm = $("#input-sysssislog-search").val(),
+                    d.event = $("#select-event").val()
+                }
             },
             rowId: "id",
             serverSide: true,
