@@ -7,6 +7,7 @@
         $(document).on("click", "#button-view-configuration", function () {
             configuration.GetConfiguration($(this).attr("data-configurationApp"), $(this).attr("data-configurationKey"));
             $("#modal-configuration").modal("show");
+            
         });
 
         $(document).on("click", "#buttonSubmitConfigurationChange", function () {
@@ -64,7 +65,7 @@
                 { data: "Application", sortable: true, searchable: true, name: "Application" },
                 { data: "Key", sortable: true, searchable: true, name: "Key" },
              // { Name: "Quick Values", sortable: true, searchable: true },
-                { Name: "Edit Quick Values", sortable: false, searchable: false }
+                { Name: "Edit Quick Values", sortable: false, searchable: false}
             ],
             columnDefs: [
                 {
@@ -92,13 +93,13 @@
                 $("#configuration-details").addClass("hidden");
                 $("#table-configuration-details > tbody:last-child").empty();
 
-                var configValue = "<tr><td><b> Config Values: </b></td><td>" + response.Value + "</td></tr>";
+                //var configValue = "<tr><td><b> Configuration Value: </b></td><td>" + response.Value + "</td></tr>";
                 var editValue = "<tr><td><b> New Value:</b></td><td><textarea id=\"newConfigurationValue\" type=\"text\" value=\"\"\"></textarea></td></tr>";
 
                 //set the submit change button to have app and key info
                 $("#buttonSubmitConfigurationChange").attr("data-app", response.Application);
                 $("#buttonSubmitConfigurationChange").attr("data-key", response.Key);
-                $("#table-configuration-details > tbody:last-child").append(configValue + editValue);
+                $("#newConfigurationValue").val(response.Value);
 
                 $("#configuration-details").removeClass("hidden");
                 $("#modal-configuration").modal("show");
