@@ -18,7 +18,7 @@ namespace CCFLoggingConfig
                     .AfterMap((src, dest) => dest.Timestamp = Convert.ToDateTime(src.Timestamp).ToString("yyyy-mm-dd"));
                 cfg.CreateMap<sysssislog, SysssislogViewModel>()
                     .AfterMap((src, dest) => dest.starttime = Convert.ToDateTime(src.starttime).ToString("yyyy-mm-dd"))
-                    .AfterMap((src, dest) => dest.endtime = Convert.ToDateTime(src.endtime).ToString("yyyy-mm-dd")); 
+                    .AfterMap((src, dest) => dest.endtime = Convert.ToDateTime(src.endtime).ToString("yyyy-mm-dd"));
             });
         }
     }

@@ -31,6 +31,16 @@
     <Property Name="FormattedMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="EntityKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
+  <EntityType Name="SSIS_Configurations">
+    <Key>
+      <PropertyRef Name="ConfigurationFilter" />
+      <PropertyRef Name="ConfiguredValue" />
+    </Key>
+    <Property Name="ConfigurationFilter" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ConfiguredValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PackagePath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ConfiguredValueType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
   <EntityType Name="sysssislog">
     <Key>
       <PropertyRef Name="id" />
@@ -48,21 +58,10 @@
     <Property Name="databytes" Type="Binary" MaxLength="Max" FixedLength="false" />
     <Property Name="message" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
-  <EntityType Name="SSIS_Configuration">
-    <Key>
-      <PropertyRef Name="ConfigurationFilter" />
-      <PropertyRef Name="PackagePath" />
-      <PropertyRef Name="ConfiguredValueType" />
-    </Key>
-    <Property Name="ConfigurationFilter" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ConfiguredValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="PackagePath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="ConfiguredValueType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-  </EntityType>
-  <EntityContainer Name="logconfigEntities1" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="logconfigEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Configurations" EntityType="Self.Configuration" />
     <EntitySet Name="Logs" EntityType="Self.Log" />
+    <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configurations" />
     <EntitySet Name="sysssislogs" EntityType="Self.sysssislog" />
-    <EntitySet Name="SSIS_Configurations" EntityType="Self.SSIS_Configuration" />
   </EntityContainer>
 </Schema>
