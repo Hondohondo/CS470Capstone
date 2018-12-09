@@ -164,7 +164,6 @@
       <DependentUpon>LogConfig.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\ConfigurationController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SSIS_ConfigurationController.cs" />
     <Compile Include="Controllers\SysssislogController.cs" />
     <Compile Include="Controllers\LogController.cs" />
@@ -1596,8 +1595,6 @@
     <Content Include="Content\css\fa\webfonts\fa-solid-900.svg" />
     <Content Include="Content\scripts\Configuration\Configuration.API.js" />
     <Content Include="Content\scripts\Configuration\Configuration.js" />
-    <Content Include="Content\scripts\Home\Home.API.js" />
-    <Content Include="Content\scripts\Home\Home.js" />
     <Content Include="Content\scripts\Log\Log.API.js" />
     <Content Include="Content\scripts\Log\Log.js" />
     <Content Include="Content\scripts\SSIS_Configuration\SSIS_Configuration.API.js" />
@@ -1713,7 +1710,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Configuration\Index.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\SSIS_Configuration\Index.cshtml" />
