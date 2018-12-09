@@ -134,7 +134,7 @@
                 data: function (d) {
                     d.application = $('#select-application').val(),
                     d.searchTerm = $("#input-log-search").val()
-                },
+                }
             },
             rowId: "LogID",
             serverSide: true,
