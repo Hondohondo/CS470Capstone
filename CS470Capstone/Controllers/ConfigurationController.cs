@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Dynamic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
+using AutoMapper;
+using CCFLoggingConfig.Models;
 
 namespace CCFLoggingConfig.Controllers
 {
     public class ConfigurationController : Controller
     {
-
         public ActionResult Index()
         {
             return View();
         }
 
-
         [HttpPost]
-        public JsonResult GetConfigurationForDataTable()
+        public JsonResult GetConfigurationsForDataTable(string application, string searchTerm)
+
         {
             try
             {
@@ -27,7 +27,6 @@ namespace CCFLoggingConfig.Controllers
                 var length = Request.Form.GetValues("length").FirstOrDefault();
 
                 var sortDirection = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
-
                 var sortColumnIndex = Request.Form.GetValues("order[0][column]").FirstOrDefault();
                 var sortColumn = Request.Form.GetValues(String.Format("columns[{0}][name]", sortColumnIndex)).FirstOrDefault();
 
@@ -39,7 +38,7 @@ namespace CCFLoggingConfig.Controllers
 
                 using (var db = new logconfigEntities())
                 {
-                    IQueryable<Configuration> query = db.Configurations.Include(c => c.quickConfiguration);
+                    IQueryable<Configuration> query = db.Configurations;
 
                     //Sorting    
                     if (sortDirection.ToLowerInvariant() == "asc")
@@ -51,16 +50,26 @@ namespace CCFLoggingConfig.Controllers
                         query = query.OrderBy(sortColumn + " " + sortDirection);
                     }
 
-                    ////Search
-                    //if (!string.IsNullOrEmpty(searchValue))
-                    //{
-                    //    query = query.Where(l => l.Title == searchValue);
-                    //}
+                    //filtering
+                    if (!String.IsNullOrWhiteSpace(application))
+                    {
+                        query = query.Where(l => l.Application == application.Trim());
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(searchTerm))
+                    {
+                        query = query.Where(l => l.Key.Contains(searchTerm) ||
+                            l.Application.Contains(searchTerm) ||
+                            l.Key.Contains(searchTerm));
+                    }
 
                     //total number of rows count     
                     recordsTotal = query.Count();
                     //Paging     
-                    var data = query.Skip(skip).Take(pageSize).ToList();
+                    var data = query
+                        .Skip(skip)
+                        .Take(pageSize)
+                        .ToList();
 
                     //Returning Json Data    
                     return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
@@ -80,7 +89,7 @@ namespace CCFLoggingConfig.Controllers
             {
                 using (var db = new logconfigEntities())
                 {
-                    var config = db.Configurations.Find(application,key);
+                    var config = db.Configurations.Find(application, key);
                     return Json(config);
                 }
             }
@@ -102,7 +111,7 @@ namespace CCFLoggingConfig.Controllers
                     var config = db.Configurations.Find(application, key);
                     config.Value = value;
                     db.SaveChanges();
-                    return Json("successfully changed to" + value );
+                    return Json("successfully changed to" + value);
                 }
             }
             catch (Exception ex)
@@ -111,30 +120,22 @@ namespace CCFLoggingConfig.Controllers
             }
 
         }
-
-        [HttpPost]
-        public JsonResult SetQuickConfiguration(String application, String key, String value)
+        public JsonResult GetApplications()
         {
             try
             {
                 using (var db = new logconfigEntities())
                 {
-                    quickConfiguration  newRecord = new quickConfiguration
-                    {
-                        Application = application,
-                        Key = key,
-                        Value = value
-                    };
-                    db.quickConfigurations.Add(newRecord);
-                    db.SaveChanges();
-                    return Json("true");
+                    var applications = db.Configurations.Select(l => l.Application).Distinct().ToList();
+
+                    return Json(applications);
                 }
             }
             catch (Exception ex)
             {
-                return Json("false" + ex);
+                return Json(ex.Message);
             }
-
         }
     }
+
 }
