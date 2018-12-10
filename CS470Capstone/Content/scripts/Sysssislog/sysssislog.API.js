@@ -1,14 +1,29 @@
-﻿var syssislogAPI = {
+﻿var sysssislogAPI = {
 
-    GetSysssislog: function (ID, callback) {
+    GetSysssislog: function (logID, callback) {
         $.ajax({
             type: "POST",
             url: "../Sysssislog/GetSysssislog",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify({
-                ID: ID
+                logID: logID
             }),
+            success: function (data) {
+                typeof callback === "function" && callback(data);
+            },
+            error: function (xhr) {
+                alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+            }
+        });
+    },
+
+    InitializeEventsDropdown: function (callback) {
+        $.ajax({
+            type: "POST",
+            url: "../Sysssislog/GetEvents",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
             success: function (data) {
                 typeof callback === "function" && callback(data);
             },

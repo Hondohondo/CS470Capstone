@@ -4,36 +4,30 @@
             ssis_configuration.InitializeConfigDataTable();
         },
 
+
         InitializeConfigDataTable: function () {
             $("#table-ssis_configurations").DataTable({
                 ajax: {
-                    url: "../SSIS_Configuration/GetSsis_ConfigurationForDataTable",
+                    url: "../SSIS_Configuration/GetSSIS_ConfigurationForDataTable",
                     type: "POST",
                     datatype: "json",
                 },
-                rowId: "Key",
+                //rowId: "ConfigurationValue",
                 serverSide: true,
                 searching: false,
                 pageLength: 10,
                 lengthChange: false,
-                //order: [1, "desc"],
+                order: [1, "desc"],
+                processing: true,
                 columns: [
-                    { data: "Application", sortable: true, searchable: true, name: "Application" },
-                    { data: "Key", sortable: true, searchable: true, name: "Key" },
-                    { Name: "Actions", sortable: false, searchable: false }
+                    { data: "ConfigurationFilter", sortable: true, searchable: true, name: "ConfigurationFilter" },
+                    { data: "ConfiguredValue", sortable: true, searchable: true, name: "ConfiguredValue" },
+                    { data: "PackagePath", sortable: true, searchable: false, name: "PackagePath" },
+                    { data: "ConfiguredValueType", sortable: true, searchable: false, name: "ConfiguredValueType" },
                 ],
-                columnDefs: [
-                    {
-                        targets: 2,
-                        visible: true,
-                        render: function (data, type, row) {
-                            return '<button id="my button">Configure</button>';
-                        }
-                    },
-                ]
             });
         }
 
     };
 
-    $(document).ready(configuration.Initialize());
+$(document).ready(ssis_configuration.Initialize());

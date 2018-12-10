@@ -1,48 +1,59 @@
-﻿
-
-var configuration = {
+﻿var configuration = {
 
     Initialize: function () {
         configuration.InitializeConfigDataTable();
-
+        configuration.InitializeApplicationDropdown();
 
         $(document).on("click", "#button-view-configuration", function () {
             configuration.GetConfiguration($(this).attr("data-configurationApp"), $(this).attr("data-configurationKey"));
             $("#modal-configuration").modal("show");
+            
         });
 
         $(document).on("click", "#buttonSubmitConfigurationChange", function () {
 
-            
+
             var newValue = $("#newConfigurationValue").val();
             var changedApplication = $(this).attr("data-app");
             var changedKey = $(this).attr("data-key");
             console.log(newValue, changedApplication, changedKey);
 
             if (newValue !== "") {
-                configurationAPI.submitConfigurationChange(changedApplication, changedKey, newValue);                       
-            }
-
-            //if a quick configuration value was selected, send the type to the database, this will allow the datatable to have a quick config option, specified by the user
-            var quickConfigurationType = $("#quickConfigurationType").val();
-
-            console.log(newValue, changedApplication, quickConfigurationType);
-
-            if (quickConfigurationType !== "") {
-                configurationAPI.submitQuickConfigurationType(changedApplication, changedKey, quickConfigurationType);
+                configurationAPI.submitConfigurationChange(changedApplication, changedKey, newValue);
             }
 
             $("#modal-configuration").modal("show");
         });
 
+        $(document).on("click", "#button-clear-search-config", function () {
+            $("#input-config-search").val('');
+            $("#select-application-config").val('');
+            $("#table-configuration").DataTable().ajax.reload();
+        });
+
+        /*
+            search filtering event handlers
+        */
+
+        $(document).on("keyup", "#input-config-search", function () {
+            $("#table-configuration").DataTable().ajax.reload();
+        });
+
+        $(document).on("change", '#select-application-config', function () {
+            $("#table-configuration").DataTable().ajax.reload();
+        });
     },
 
     InitializeConfigDataTable: function () {
         $("#table-configuration").DataTable({
             ajax: {
-                url: "../Configuration/GetConfigurationForDataTable",
+                url: "../Configuration/GetConfigurationsForDataTable",
                 type: "POST",
-                datatype: "json"
+                datatype: "json",
+                data: function (d) {
+                    d.application = $('#select-application-config').val(),
+                    d.searchTerm = $("#input-config-search").val()
+                }
             },
             rowId: "Key",
             serverSide: true,
@@ -53,16 +64,16 @@ var configuration = {
             columns: [
                 { data: "Application", sortable: true, searchable: true, name: "Application" },
                 { data: "Key", sortable: true, searchable: true, name: "Key" },
-                { Name: "Quick Values", sortable: true, searchable: true },
-                { Name: "Edit Quick Values", sortable: false, searchable: false }
+             // { Name: "Quick Values", sortable: true, searchable: true },
+                { Name: "Edit Quick Values", sortable: false, searchable: false}
             ],
             columnDefs: [
                 {
-                    targets: 3,
+                    targets: 2,
                     visible: true,
                     render: function (data, type, row) {
-  
-                        return '<button class="btn btn-sm btn-primary" id="button-view-configuration" data-configurationApp="' + row.Application + '" data-configurationKey= "'+ row.Key + '"><span class="fa fa-edit"><span></button>';
+
+                        return '<button class="btn btn-sm btn-primary" id="button-view-configuration" data-configurationApp="' + row.Application + '" data-configurationKey= "' + row.Key + '"><span class="fa fa-edit"><span></button>';
                     }
                 }
             ]
@@ -75,20 +86,20 @@ var configuration = {
 
 
             if (response) {
-          
+
                 // var configurationValue = "<tr><td><b> Configure: " + response.Application + " " + response.Key + " </b></td><td>" + response.Value + "</td></tr>";
                 $("#modal-title-configuration").text("Configure " + response.Application + ": " + response.Key);
 
                 $("#configuration-details").addClass("hidden");
                 $("#table-configuration-details > tbody:last-child").empty();
 
-                var configValue = "<tr><td><b> Current Values: </b></td><td>" + response.Value + "</td></tr>";
+                //var configValue = "<tr><td><b> Configuration Value: </b></td><td>" + response.Value + "</td></tr>";
                 var editValue = "<tr><td><b> New Value:</b></td><td><textarea id=\"newConfigurationValue\" type=\"text\" value=\"\"\"></textarea></td></tr>";
-               
+
                 //set the submit change button to have app and key info
                 $("#buttonSubmitConfigurationChange").attr("data-app", response.Application);
                 $("#buttonSubmitConfigurationChange").attr("data-key", response.Key);
-                $("#table-configuration-details > tbody:last-child").append(configValue + editValue);
+                $("#newConfigurationValue").val(response.Value);
 
                 $("#configuration-details").removeClass("hidden");
                 $("#modal-configuration").modal("show");
@@ -97,7 +108,16 @@ var configuration = {
                 console.log(response);
             }
         });
-    }
+    },
+
+    InitializeApplicationDropdown: function () {
+        //select distinct applications from table
+        configurationAPI.InitializeApplicationDropdown(function (response) {
+            $.each(response, function (index, value) {
+                $("#select-application-config").append('<option value="' + value + '">' + value + '</option>');
+            });
+        });
+    },
 
 
 };

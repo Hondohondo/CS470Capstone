@@ -12,7 +12,7 @@ namespace CCFLoggingConfig
     using System;
     using System.Collections.Generic;
     
-    public partial class SSIS_Configuration
+    public partial class SSIS_Configurations
     {
         public string ConfigurationFilter { get; set; }
         public string ConfiguredValue { get; set; }

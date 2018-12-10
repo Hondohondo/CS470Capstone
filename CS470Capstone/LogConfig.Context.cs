@@ -27,7 +27,7 @@ namespace CCFLoggingConfig
     
         public virtual DbSet<Configuration> Configurations { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<SSIS_Configurations> SSIS_Configurations { get; set; }
         public virtual DbSet<sysssislog> sysssislogs { get; set; }
-        public virtual DbSet<SSIS_Configuration> SSIS_Configurations { get; set; }
     }
 }

@@ -16,7 +16,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("CS470 Capstone CCF", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -75,7 +74,7 @@
     </div>
 
     <!-- Formatted Message modal -->
-    <div class="modal fade modal-lg" id="modal-pretty-json" role="dialog" tabindex="-1">
+    <div class="modal fade" id="modal-pretty-json" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -83,7 +82,46 @@
                     <h4 class="modal-title">Formatted Message</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="pretty-json" class="well"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="input-json-search">Keyword</label>
+                            <input id="input-json-search" class="form-control json-search" type="text" placeholder="Enter search term" style="width:100%" />
+                            <small id="no-search-value" class="form-text text-muted hidden search-warning">Please enter a search term</small>
+                            <br />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="input-json-char-limit">Char limit</label>
+                            <input id="input-json-char-limit" class="form-control json-search" type="number" min="0" placeholder="200" />
+                            <small id="no-char-value" class="form-text text-muted hidden search-warning">Please enter a character limit</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id="button-search-json" class="btn btn-primary">Search JSON message &nbsp; <span class="fa fa-search"></span></button>
+                            <br />
+                            <small id="no-result" class="form-text text-muted hidden search-warning">No result based on search conditions</small>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="json-search-result" class="hidden">
+                                <label for="input-json-search-result">Result</label>
+                                <textarea id="input-json-search-result" type="text" class="form-control" placeholder="result" readonly style="min-width: 100%"></textarea>
+                                <br />
+                                <button id="copy-json-result" class="btn btn-primary">Copy result text &nbsp; <span class="fa fa-clipboard"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="pretty-json">Full JSON message</label>
+                            <textarea id="pretty-json" type="text" class="form-control" placeholder="result" readonly style="min-width: 100%"></textarea>
+                            <br />
+                            <button id="copy-json" class="btn btn-primary">Copy full JSON message &nbsp; <span class="fa fa-clipboard"></span></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -98,36 +136,63 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="fa fa-sm fa-times"></span></button>
-                    <h4 class="modal-title" id="modal-title-configuration">Configure</h4>
+                    <h3 class="modal-title" id="modal-title-configuration">Configure</h3>
                 </div>
-                <div id="quickValueTypeSelect">
-                    <h3>Select Quick Value type</h3>
-                    <select id="quickConfigurationType">
-                        <option value="Boolean">Boolean</option>
-                        <option value="String">String</option>
-                        <option value="Int">Int</option>
-                        <option value="HTML">HTML</option>
-                    </select>
-                </div>
+                <!-- <div id="quickValueTypeSelect">
+                        <h3>Select Quick Value type</h3>
+                        <select id="quickConfigurationType">
+                            <option value="Boolean">Boolean</option>
+                            <option value="String">String</option>
+                            <option value="Int">Int</option>
+                            <option value="HTML">HTML</option>
+                        </select>
+    -->
                 <div class="modal-body">
-                    <h3>Or Change Value Here:</h3>
-                    <div id="configuration-details">
-                        <table id="table-configuration-details" class="table table-bordered table-condensed table-striped table-responsive">
-                            <tbody></tbody>
-                        </table>
+                   
+
+                    <div id="configChange">
+                        <label for="newConfigurationValue">Change Value</label>
+                        <input id="newConfigurationValue" class="form-control json-search" type="text" placeholder="Enter New Value" style="width:100%" />
+                        <small id="no-search-value" class="form-text text-muted hidden search-warning">Please enter a search term</small>
                     </div>
+                    
+                    <div>
+                        <button type="button" id="buttonSubmitConfigurationChange" class="btn btn-primary">Submit Changes</button>
+                    </div>
+
+
                 </div>
+              
+               
                 <div class="modal-footer">
-                    <div id="changeConfigSubmit">
-                       
-                        <button type="button" id="buttonSubmitConfigurationChange" class="btn btn-success">Submit Changes</button>
-                    </div>
+
                     <div id="closeConfigurationChange">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
                     </div>
                 </div>
-               
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SYSSSISLOG modal-->
+    <div class="modal fade" id="modal-sysssislog-details" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="fa fa-sm fa-times"></span></button>
+                    <h4 class="modal-title" id="modal-title-configuration">Sysssislog</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="table-sysssislog-details" class="table table-bordered table-condensed table-striped table-responsive">
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+
             </div>
         </div>
     </div>

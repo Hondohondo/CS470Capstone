@@ -123,3 +123,20 @@ textarea {
 #newConfigurationValue{
     width: 100%;
 }
+
+.search-warning{
+    color: red;
+}
+
+
+#changeConfigSubmit {
+    padding-left: 18px;
+}
+
+#modal-body-config{
+    padding-bottom: 100px;
+}
+
+#configChange{
+    padding-bottom: 18px;
+}
