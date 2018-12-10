@@ -102,6 +102,7 @@ namespace CCFLoggingConfig.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult GetApplications() {
             try
             {

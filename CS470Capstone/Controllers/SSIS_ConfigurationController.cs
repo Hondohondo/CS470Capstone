@@ -17,7 +17,7 @@ namespace CCFLoggingConfig.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSSIS_ConfigurationForDataTable()
+        public JsonResult GetSSIS_ConfigurationForDataTable(string type)
         {
             try
             {
@@ -49,6 +49,12 @@ namespace CCFLoggingConfig.Controllers
                         query = query.OrderBy(sortColumn + " " + sortDirection);
                     }
 
+                    //Filtering
+                    if (!String.IsNullOrWhiteSpace(type))
+                    {
+                        query = query.Where(s => s.ConfiguredValueType == type);
+                    }
+
                     //total number of rows count     
                     recordsTotal = query.Count();
                     //Paging     
@@ -59,6 +65,24 @@ namespace CCFLoggingConfig.Controllers
 
                     //Returning Json Data    
                     return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetTypes()
+        {
+            try
+            {
+                using (var db = new logconfigEntities())
+                {
+                    var types = db.SSIS_Configurations.Select(l => l.ConfiguredValueType).Distinct().ToList();
+
+                    return Json(types);
                 }
             }
             catch (Exception ex)

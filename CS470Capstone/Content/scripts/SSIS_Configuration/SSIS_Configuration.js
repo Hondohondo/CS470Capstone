@@ -1,7 +1,17 @@
 ﻿var ssis_configuration = {
 
-        Initialize: function () {
+    Initialize: function () {
+
+        $(document).on("click", "#button-clear-search", function () {
+            $("#select-type").val('').trigger("change");
+        });
+
+        $(document).on("change", "#select-type", function () {
+            $("#table-ssis_configurations").DataTable().ajax.reload();
+        })
+
             ssis_configuration.InitializeConfigDataTable();
+            ssis_configuration.InitializeValueTypeDropdown();
         },
 
 
@@ -11,8 +21,10 @@
                     url: "../SSIS_Configuration/GetSSIS_ConfigurationForDataTable",
                     type: "POST",
                     datatype: "json",
+                    data: function (d) {
+                        d.type = $("#select-type").val();
+                    }
                 },
-                //rowId: "ConfigurationValue",
                 serverSide: true,
                 searching: false,
                 pageLength: 10,
@@ -25,6 +37,14 @@
                     { data: "PackagePath", sortable: true, searchable: false, name: "PackagePath" },
                     { data: "ConfiguredValueType", sortable: true, searchable: false, name: "ConfiguredValueType" },
                 ],
+            });
+        },
+
+        InitializeValueTypeDropdown: function () {
+            ssis_configurationAPI.InitializeValueTypeDropdown(function (response) {
+                $.each(response, function (index, value) {
+                    $("#select-type").append('<option value="' + value + '">' + value + '</option>');
+                });
             });
         }
 
