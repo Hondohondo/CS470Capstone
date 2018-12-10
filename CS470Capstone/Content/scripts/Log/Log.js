@@ -149,10 +149,12 @@
                 { data: "Priority", sortable: true, searchable: false, name: "Priority" },
                 { data: "Timestamp", sortable: true, searchable: false, name: "Timestamp" },
                 { data: "AuthenticatedUser", sortable: true, searchable: false, name: "AuthenticatedUser" },
+                { data: "LogID", sortable: true, searchable: false, name: "LogID" },
+                { data: "Message", sortable: true, searchable: false, name: "Message" }
             ],
             columnDefs: [
                 {
-                    targets: 5,
+                    targets: 7,
                     visible: true,
                     render: function (data, type, row) {
                         if (row.FormattedMessage) {
